@@ -19,13 +19,24 @@
     </div>
     <br>
     <div>
-        <strong>要点</strong><hr>
+        <strong>要点1</strong><hr>
         <div>
             内联方式加载javascript代码的时候，他是从上往下进行执行，在解释器对script标签元素内部的所有代码求值完毕之前，
             页面中的其余内容都不会被浏览器加载或显示。<b>注意：</b>不要在代码中的任何地方出现"<'/script>''"字符串，不然那会产生错误；
             可以通过在/的前面加一个\进行转义，
             <hr>
             在带有src的script中书写javascript代码，不会被执行；页面解析script标签是按照顺序从上到下进行执行解析；
+        </div>
+        <hr>
+        <strong>要点2</strong><hr>
+        <div>
+            将script标签放在head标签中，意味着等到全部javascript全部加载完成之或者解析之后，才开始呈现页面的内容。
+            <br>可以将script代码写在body标签中。在script标签中设置属性defer=‘defer’，说明脚本在执行的时候不会影响页面的构造<br>
+            也就是说脚本会被推迟到整个页面都解析完毕后在执行。defer适用于外部文件；且会有执行顺序，从上到下；而async属性，直接在<br>
+            script标签中写上即可，他的执行顺序是从下往上。，异步加载js文件。
+            <br>
+            noscript标签：在浏览器不支持javascript或者浏览器禁用了javascript，这个标签可以包含很多，包含除了script标签中的<br>
+            所有的东西。
         </div>
     </div>
     <script>
@@ -34,7 +45,7 @@
         // }
         function sayScript1(){
             alert("<\/script>");
-        }
+        }*/
     </script>
 </body>
 </html>
