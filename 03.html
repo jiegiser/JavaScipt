@@ -13,8 +13,55 @@
         <strong>要点1</strong>
         <hr>
         <div>
-           javascript变量名是区分大小写，他的标识符按照规范为驼峰式命名，也就是第一个字母小写，下一个单词首字母大写。
+            <p>javascript变量名是区分大小写，他的标识符按照规范为驼峰式命名，也就是第一个字母小写，下一个单词首字母大写。</p>
+            <br>
+            <p>对于未声明的变量调用delete不会导致错误，但是在严格模式下，会出现错误，对于初始化的变量执行typeof操作符会返回
+                undefined，而对于未声明的变量执行typeof操作符同样也会返回undefined值、
+            </p>
+            <br>
+            <p>boolean中的true与false是区分大小写的，要将任何一个值转换为bool类型，使用Boolean转换函数</p>
         </div>
+        <script>
+            // 这样使用一条语句可以定义多个变量
+            var message = 'hi',
+                found = false,
+                age = 29;
+            function test(){
+                var re='hi';
+            }
+            // alert(re);//报错re is not defined
+            // ecmascript有七种数据类型undefined、null、Boolean、Number、String、Symbol、Set
+
+
+
+            var say;
+            // console.log(say);//undefined
+            // console.log(arr);//会报错  arr is not defined
+
+
+            // console.log(typeof say);//undefined
+            // console.log(typeof arr);//undefined
+// 
+            // var ObNnull=null;
+            // console.log(typeof ObNnull);//object表示空对象
+// 
+            // console.log(null==undefined);//true
+// 
+            // console.log(ObNnull);//null,判断是否为null，只需要==null，就可以
+
+
+            console.log(Boolean("ddddd"));//Boolean转换为boolean类型
+            console.log(Boolean(''));//false
+            console.log(Boolean(null));//false
+            console.log(Boolean(NaN));//false
+            console.log(Boolean(0));//false
+            console.log(Boolean(undefined));//false
+
+
+
+
+            
+        </script>
     </div>
 </body>
 
