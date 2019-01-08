@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>面向对象的程序设计</title>
+</head>
+
+<body>
+    <div>
+        ecma中有两种属性：数据属性和访问器属性；
+        数据属性包含一个数据值的位置，在这个位置可以读取和写入值。
+        <br>
+        <h2>数据属性：</h2>
+        <ul>
+            <li>[[Configurable]]表示能否通过delete删除属性，修改属性的特性，或者能否把属性修改为访问器属性</li>
+            <li>[[Enmuerable]]:表示能否通过for-in循环返回属性</li>
+            <li>[[Writable]]:表示能否修改属性的值</li>
+            <li>[[Value]]：表示这个属性的值。比如定义一个perosn对象，他的name属性为jie，那么他的[[Value]]存放的是jie</li>
+        </ul>
+        <p>要修改属性默认的特性，必须使用ecma5中的object.definePropery()方法</p>
+        <h2>访问器属性：</h2>
+        <p>不包含数据值，他们包含一对getter很setter函数（不过这两个函数都不是必须的）在读取访问器属性是，就会调用getter方法
+            这个函数赋值返回有效的值，在写入访问器属性时，会调用setter函数并传入新值，这个函数负责决定如何处理数据。
+        </p>
+        <ul>
+            <li>[[Configurable]]表示能否通过delete删除属性，修改属性的特性，或者能否把属性修改为访问器属性</li>
+            <li>[[Enmuerable]]:表示能否通过for-in循环返回属性</li>
+            <li>[[Get]]:在读取属性时调用该函数</li>
+            <li>[[Set]]：在写入属性时调用该函数</li>
+        </ul>
+        <p>要修改属性默认的特性，必须使用ecma5中的object.definePropery()方法</p>
+    </div>
+    <script>
+        // ------------------------------------
+        // 'use strict'
+        // 修改属性默认的特性，该方法接受是三个参数，属性所在的对象，属性的名字和一个描述符对象
+        // 描述符对象的属性必须是：configurable,enumerbale,writable,value，设置其中一个或多个值，
+        // let person={
+
+        // }
+        // // 表示name属性是只读的
+        // Object.defineProperty(person,'name', {
+        //     writable: false,//表示不能修改属性的值
+        //     value: 'jiegiser',//赋值属性值为jiegiser
+        //     configurable: false//表示不能通过delete删除属性
+        // });
+        // console.log(person);
+        // person.name="jieouba";//在严格模式下会报错
+        // console.log(person.name);//修改不成功，还是jiegiser
+        // delete person.name;
+        // console.log(person);
+
+        // 这里需要注意的是，如果一但通过defineProperty改变了configurable为不可配置，那么就不能再把它变回可配置
+        // 调用Object.defineProperty方法修改除了writable之外的特性多会报错；
+        // 抛出异常--Cannot redefine property: name
+        // Object.defineProperty(person,'name',{
+        //     configurable: true,
+        //     value: 'jieouba'
+        // })
+        // 也就是说可以多次调用Object.defineProperty方法修改同一个属性，但是在把configurable特性设置为false之后，就会有限制
+        // 如果调用Object.defineProperty方法只是修改已定义的属性的特性，则无此限制。----建议不要在IE8中使用，会有问题-不完善
+
+
+
+
+
+
+
+
+
+
+
+        // -----------------------------------
+        // let book= {
+        //     _year: 2019,//下划线表示只能通过对象方法访问
+        //     edition:1
+        // }
+        // // 访问器
+        // Object.defineProperty(book,'year',{
+        //     // 不一定非要同时制定getter与setter，只制定getter意味着属性是不能写的，尝试写入属性会被忽略，在严格模式会报错
+        //     // 只制定setter函数的属性也不能读，在非严格模式会返回undefined，在严格模式会抛出异常
+        //     get(){
+        //         return this._year;
+        //     },
+        //     set(newValue) {
+        //         if(newValue>2019) {
+        //             this._year=newValue;
+        //             this.edition+=newValue-2019
+        //         }
+        //     }
+        // })
+        // book.year=2020;
+        // console.log(book);
+        // 在这方法之前，一般使用_defineGetter_()/_defineSetter_()方法来创建访问器属性。
+
+        // 要实现上面的可以这样写：
+        // let book={
+        //     _year:2019,
+        //     edition:1
+        // }
+        // // 定义访问器的旧方法,注意这里是两个下划线
+        // book.__defineGetter__('year',function(){
+        //     return this._year;
+        // })
+        // book.__defineSetter__('year',function(newValue){
+        //     if(newValue>2019){
+        //         this._year=newValue;
+        //         this.edition+=newValue-2019;
+        //     }
+        // });
+        // book.year=2020;
+        // console.log(book);
+
+
+        // 需要注意的是，在不支持Object.defineProperty方法的浏览器中不能修改[[Configurable]]和[[Enmuerable]]
+
+        // -----------------------------------
+        // 为对象定义多个属性
+        // let book={};
+        // Object.defineProperties(book,{
+        //     _year:{
+        //         writable:true,
+        //         value:2019
+        //     },
+        //     edition:{
+        //         writable:true,
+        //         value:1
+        //     },
+        // //访问器属性
+        //     year: {
+        //         get(){
+        //             return this._year;
+        //         },
+        //         set(newValue) {
+        //             if(newValue>2019){
+        //                 this._year=newValue;
+        //                 this.edition+=newValue-2019
+        //             }
+        //         }
+        //     }
+        // });
+
+        // book.year=2020;
+        // console.log(book);
+    </script>
+</body>
+
+</html>
