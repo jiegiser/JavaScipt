@@ -145,6 +145,57 @@
 
         // book.year=2020;
         // console.log(book);
+
+
+        // -----------------------------------------------------------------------
+        // 2019-1-9
+        // Object.getOwnPropertyDescriptor()方法可以取得给定属性的描述符，他包含两个参数，
+        // 为：属性所在的对象和要读取其描述符的属性名称，返回一个对象，如果是访问器属性，这个
+        // 对象的属性有configurable、enumberable、get和set如果是数据属性，这个对象属性有
+        // configurable、enumberable、writable、和value
+        // const book = {};
+        // Object.defineProperties(book, {
+        //     _year: {
+        //         value: 2019
+        //     },
+        //     edition: {
+        //         value: 1
+        //     },
+        //     year: {
+        //         get() {
+        //             return this._year;
+        //         },
+        //         set(newValue) {
+        //             if (newValue > 2019) {
+        //                 this._year = newValue;
+        //                 this.edition += newValue - 2019;
+        //             }
+        //         }
+        //     }
+        // });
+
+        // const decriptor = Object.getOwnPropertyDescriptor(book, '_year');
+        // console.log(decriptor); //{value: 2019, writable: false, enumerable: false, configurable: false}
+        // console.log(typeof decriptor.get) //undefined
+        // const descriptorYear = Object.getOwnPropertyDescriptor(book, 'year');
+        // console.log(descriptorYear); //{get: ƒ, set: ƒ, enumerable: false, configurable: false}
+        // console.log(descriptorYear.value); //undefined
+        // console.log(typeof descriptorYear.get) //function
+
+        // ---------------------------------google调试技巧
+        // -----console------
+        // 1. $1,$2,$3依次类推，是我们所选择过的元素，可以使用其他引用来尝试一些相关操作(例子: $1.appendChild($0))
+        // 2. $(),在console中相当于document.querySelector，$$();它不仅仅执行document.QuerySelectorAll并且返回的是一个节点的数组，而不是一个Node list
+        // 两者的区别就是比如$('div'),$$('div');前者返回的是页面中所有的div。并按照父子关系显示，后者也是按照父子关系，但是他返回的是一个数组
+        // 3. $_，是显示上一次执行的结果；
+        // 4. $i('lodash'),可以直接使用lodash，但是我的浏览器，不行。
+        // --------copying & saving------
+        // 1. copy() 方法,可以copy所有的资源,比如我们前面的$0,$1等等,也可以copy函数,变量等等;
+        // 2. 选择变量右击它，并且选择“Store as global variable” (保存为全局变量),这样会默认命名为temp1,一直往下延续,
+        // 这样操作就是方面我们在后面使用操作他,比如你在console中输入一个数组,你没有用变量打印他,你可以手动设置他为全局变量;
+        // 3. 对于页面出错信息,我们可以使用在出错信息上右击选择save as进行保存log文件,
+        // 4. 右击或者点击在html元素边上的省略号(...)就可以将它copy到你的操作系统的剪贴板中
+        
     </script>
 </body>
 
