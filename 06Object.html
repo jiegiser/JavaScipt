@@ -181,6 +181,9 @@
         // console.log(descriptorYear); //{get: ƒ, set: ƒ, enumerable: false, configurable: false}
         // console.log(descriptorYear.value); //undefined
         // console.log(typeof descriptorYear.get) //function
+        // 在javascript中,对于DOM以及BOM都可以使用getOwnPropertyDescriptor()方法
+
+
 
         // ---------------------------------google调试技巧
         // -----console------
@@ -195,7 +198,172 @@
         // 这样操作就是方面我们在后面使用操作他,比如你在console中输入一个数组,你没有用变量打印他,你可以手动设置他为全局变量;
         // 3. 对于页面出错信息,我们可以使用在出错信息上右击选择save as进行保存log文件,
         // 4. 右击或者点击在html元素边上的省略号(...)就可以将它copy到你的操作系统的剪贴板中
+        // ----------console中的函数------------
+        // 1. console.assert()函数，比如console.assert(true,["ss","ssfdfd"]);他会打印undefined，如果为false那么console.assert(false,["ss","ssfdfd"]);
+        // 打印结果为VM448:1 Assertion failed: (2) ["ss", "ssfdfd"]；也就是说我们不需要用if进行判断了，比如我们通常这样：
+        // let aa=null;if(aa==null){console.log("null")}在console中我们可以这样console.assert(aa!=null,"null")打印出为Assertion failed: null
+        // 如果前面的判断为false的时候，会进入后面的语句；
+        // 2. console.dir();比如我们打印页面的li元素，li=$('li')；console.log(li);只会打印出他里面的元素，并不是我们想要的，我们想要看他的属性，而不是DOM。
+        // 我们只需要console.dir(li);这样，就会打印出他的所有属性
+        // 3. console.table($$('li'),["textContent","className"])；会打印出一个表格，表头为index，textContent，className
+        // 如果是数组的话，可以直接传入数组即可，let as=["dd",'aa',"wqw"]  console.table(as)，表头为index、value
+        // ----------元素面板-----------------
+        // 1. 可以按h，来实现影藏或显示元素；
+
+        // ----------------------------------------------
+        // 工厂模式
+        // 产生的原因：使用同一个接口创建很多对象，会产生大量的重复的代码，为了解决这个问题，
+        // 工厂模式：该模式抽象了创建具体对象的过程，考虑到在ECMAscript中无法创建类，开发人员就发明了一种函数，用函数来封装以特定接口创建对象的细节；
+        // function createPerson(name,age,job) {
+        //     let o=new Object();
+        //     o.name=name;
+        //     o.age=age;
+        //     o.job=job;
+        //     o.sayName= function(){
+        //         console.log(this.name);
+        //     }
+        //     return o;
+        // }
+        // const jiegiser=createPerson('jiegiser',18,'giser');
+        // const jieouba=createPerson('jieouba',18,'junren'); 
+        // console.log(jiegiser);
+        // console.log(jieouba);
+        // 工厂对象虽然解决了创建多个相同对象的问题，但是没有解决对象识别的问题，也就是怎么知道一个对象的类型
+
+        // -------------------------------------------
+        // 构造函数模式
+        // 上面的例子可以这样写：
+        // function Person(name,age,job){
+        //     this.name=name;
+        //     this.age=age;
+        //     this.job=job;
+        //     this.sayName=function(){
+        //         console.log(this.name);
+        //     }
+        // }
+        // const person1=new Person('jiegiser',18,'IT');//Person {name: "jiegiser", age: 18, job: "IT", sayName: ƒ}
+        // const person2=new Person('jieouba',18,'giser');//Person {name: "jieouba", age: 18, job: "giser", sayName: ƒ}
+        // console.log(person1);
+        // console.log(person2);
+        // console.log(person1===person2);
+        // 可以发现跟上面不同的是，没有显示的创建对象，直接将属性和方法赋值给了对象，没有return语句
+        // 还有就会Person的P是大写，按照规定构造函数始终都应该以一个大写字母开头，而非构造函数的那么使用小写字母进行书写；
+        // 这里注意，构造函数本身也是构造函数，只不过可以用来创建对象而已；
+        // 要创建person实例，必须要使用new关键字进行创建，创建一个实例，其实是以下四个步骤：
+        // 1. 创建一个新对象；
+        // 2. 将构造函数的作用域赋给新对象；
+        // 3. 执行构造函数中的代码（为这个新对象添加属性）；
+        // 4. 返回新对象
+        // 需要注意的是，person1和person2分别保存着peroson的一个不同的实例，这两个对象都有一个constructor（构造函数）属性，该属性指向Person：
+        // console.log(person1.constructor==Person);//true
+        // console.log(person2.constructor==Person);//true
+        // // 对象的constructor属性是用来标识对象类型的，我们创建的所有对象，既是Object的实例，同时也是Person的实例：
+        // console.log(person1 instanceof Object);//true
+        // console.log(person1 instanceof Person);//true
+        // 创建自定义的构造函数意味着将来可以将它的实例标识为一种特定 的类型，而这个正是构造函数模式胜过工厂模式的地方。
+        // 上面的例子中person1和peroson2之所以同时是Object 的实例，是因为所有对象均继承object；
+
+
+        // 构造函数与其他函数的唯一区别就是需要用new，但是任何函数，只要通过new操作符来调用，那他就可以作为构造函数，如果任何函数不使用new来调用，
+        // 那他跟普通函数没什么区别；
+        // 例如前面的例子
+        // 当做构造函数使用
+        // const person1=new Person('jiegiser',18,'IT');//Person {name: "jiegiser", age: 18, job: "IT", sayName: ƒ}
+        // console.log(person1);
+        // // 当做普通函数使用
+        // Person('jieouba',18,'giser');
+        // window.sayName();
+        // // 在另一个对象的作用域中调用
+        // let o=new Object();
+        // Person.call(o,'jie',18,'giser');
+        // o.sayName();
+
+        // 构造函数的问题：就是每一个方法都要在每个实例上重新创建一遍，比如说我们前面的例子，sayName方法，其实在每次实例化对象的时候，都会创建一次；
+        // 他实际执行的如下的代码：
+        // function Person(name,age,job){
+        //     this.name=name;
+        //     this.age=age;
+        //     this.job=job;
+        //     this.sayName=new Function("console.log(this.name);");    
+        // }
+        // const person1=new Person('jiegiser',18,'IT');//Person {name: "jiegiser", age: 18, job: "IT", sayName: ƒ}
+        // const person2=new Person('jieouba',18,'giser');//Person {name: "jieouba", age: 18, job: "giser", sayName: ƒ}
+        // console.log(person1);
+        // console.log(person2);
+        // 但是如果我们将Person的sayName方法转移到构造函数外，像下面的代码：
+        // function Person(name,age,job){
+        //     this.name=name;
+        //     this.age=age;
+        //     this.job=job;
+        //     this.sayName=sayName;
+        // }
+        // function sayName(){
+        //     console.log(this.name);
+        // }
+        // 这样一来，由于sayName包含的是一个指向函数的指针，因此person1与perosn2就共享了在全局作用域中定义的同一个sayName函数，这样确实解决了
+        // 两个函数做了同一件是的问题，但是，在全局作用域中定义的函数实际上只能被没有对象调用，这让全局作用域有点名不副实，而且，如果对象需要定义很多
+        // 方法，那么就要定义很多个全局函数，那么我们这个自定义的引用类型就丝毫没有封装性可言了。可以使用原型模式来解决这个问题；
+
+
+
+
+        // ---------------------原型模式--------------------------
+        // 我们创建的每一个函数都有一个prototype（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途就是包含可以由特定类型的所有实例
+        // 共享的属性和方法。按照字面理解prototype就是通过调用构造函数而创建的那个对象实例的原型对象，使用原型对象的好处是可以让所有对象共享它所包含的
+        // 属性和方法，换句话说，不必在构造函数中定义对象实例的信息，而是可以将这些信息直接添加到原型对象中，下面的例子：
+        function Person(){}
+        Person.prototype.name='jiegiser';
+        Person.prototype.age=18;
+        Person.prototype.job='giser';
+        Person.prototype.sayName=function(){
+            console.log(this.name);
+        }
+        console.log(Person.prototype.constructor);
+
+        const person1=new Person();
+        person1.name="jieouba";
+        // console.log(person1);
+        // person1.sayName();
+        // const perosn2=new Person();
+        // perosn2.sayName();
+        // console.log(person1.sayName==perosn2.sayName);//true
+
+        // 可以看到构造函数变成了变成看空对象；
+
+        // 原型对象--------------------
+        // 无论什么时候，只要创建一个新函数，就会根据一组特定的规则为该函数创建一个prototype属性，这个属性指向函数的原型对象。
+        // 在默认的情况下，所有原型对象都会自动获取一个constructor（构造函数）属性，这个属性是一个指向prototype属性所在函数的指针。比如前面的例子
+        // Person.prototype.constructor指向Person，而通过这个构造函数，我们还可以继续为原型对象添加其他属性和方法。
+
+        // 创建了自定义的构造函数之后，其原型对象默认只会取得constructor属性，至于其他方法，都是从Object继承而来，当调用构造函数创建一个新实例后，
+        // 该实例的内部将包含一个指针（内部属性），指向构造函数的原型对象。
+
+        // 需要注意的是，当调用构造函数创建一个新实例后，该实例的内部将包含一个指针__prpto__,指向构造函数的原型对象；需要注意的是，这个连接存在与实例与
+        // 构造函数的原型对象之间，而不是实例与构造函数之间；
         
+        
+        // 理一遍思路：首先构造函数有一个prototype指向的是原型对象，而原型对象的constructor指向的是prototype属性所在的函数，也就是构造函数；构造函数
+        // 的默认属性是有一个constructor的指向的是prototype属性所在的函数，比如我们的Person，我们后来为他的原型对象又加了name，age等属性，其实prototype
+        // 就是构造函数的原型对象；
+        // 然后实例化后的对象有一个__proto__属性，指向的是构造函数的原型，而构造函数原型对象的constructor属性指向的是构造函数本身；
+        // 这里需要记住一句话：与构造函数没有直接的关系，他们都是构造函数原型对象之间的关系。
+
+
+        // 如果不存在__proto__属性可以通过isProtoypeOf()方法来确定对象之间是够存在这种关系；如果__proto__属性指向调用isPrototypeOf方法的对象
+        // （Person.prototype），那么这个方法就返回true；
+        console.log(Person.prototype.isPrototypeOf(person1));//true,也就是说，看person1这个对象是否调用了Perosn.prototype。
+
+
+        // 对象有一个方法getPrototypeOf方法，会返回对象的__proto__属性；
+        console.log(Object.getPrototypeOf(person1));//{name: "jiegiser", age: 18, job: "giser", sayName: ƒ, constructor: ƒ}
+        console.log(Object.getPrototypeOf(person1)==Person.prototype);//true
+        console.log(person1);
+        console.log(Object.getPrototypeOf(person1)==person1.__proto__);//true
+
+        // 这里需要注意的是，每当代码读取某个对象的属性时，都会执行一次搜索，目标是具有给定名字的属性，首先从实例本身开始，如果在实例中找到了
+        // 具有给定名字的属性，那么返回该属性值，如果没有找到，则继续搜索指针指向的原型对象，在原型对象中查找具有给定名字的属性。如果在原型对象
+        // 中找到了这个属性，则返回，例如上面的person1.sayName（），会先后执行两次搜索，首先会从person1的实例进行搜索，如果没有就从person1的原型
+        // 进行搜索，
     </script>
 </body>
 
