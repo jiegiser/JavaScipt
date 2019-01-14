@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>浏览器调试技巧</title>
+</head>
+<body>
+    <div>调试技巧</div>
+    <script>
+// ---------------------------------google调试技巧
+        // -----console------
+        // 1. $1,$2,$3依次类推，是我们所选择过的元素，可以使用其他引用来尝试一些相关操作(例子: $1.appendChild($0))
+        // 2. $(),在console中相当于document.querySelector，$$();它不仅仅执行document.QuerySelectorAll并且返回的是一个节点的数组，而不是一个Node list
+        // 两者的区别就是比如$('div'),$$('div');前者返回的是页面中所有的div。并按照父子关系显示，后者也是按照父子关系，但是他返回的是一个数组
+        // 3. $_，是显示上一次执行的结果；
+        // 4. $i('lodash'),可以直接使用lodash，但是我的浏览器，不行。
+        // --------copying & saving------
+        // 1. copy() 方法,可以copy所有的资源,比如我们前面的$0,$1等等,也可以copy函数,变量等等;
+        // 2. 选择变量右击它，并且选择“Store as global variable” (保存为全局变量),这样会默认命名为temp1,一直往下延续,
+        // 这样操作就是方面我们在后面使用操作他,比如你在console中输入一个数组,你没有用变量打印他,你可以手动设置他为全局变量;
+        // 3. 对于页面出错信息,我们可以使用在出错信息上右击选择save as进行保存log文件,
+        // 4. 右击或者点击在html元素边上的省略号(...)就可以将它copy到你的操作系统的剪贴板中
+        // ----------console中的函数------------
+        // 1. console.assert()函数，比如console.assert(true,["ss","ssfdfd"]);他会打印undefined，如果为false那么console.assert(false,["ss","ssfdfd"]);
+        // 打印结果为VM448:1 Assertion failed: (2) ["ss", "ssfdfd"]；也就是说我们不需要用if进行判断了，比如我们通常这样：
+        // let aa=null;if(aa==null){console.log("null")}在console中我们可以这样console.assert(aa!=null,"null")打印出为Assertion failed: null
+        // 如果前面的判断为false的时候，会进入后面的语句；
+        // 2. console.dir();比如我们打印页面的li元素，li=$('li')；console.log(li);只会打印出他里面的元素，并不是我们想要的，我们想要看他的属性，而不是DOM。
+        // 我们只需要console.dir(li);这样，就会打印出他的所有属性
+        // 3. console.table($$('li'),["textContent","className"])；会打印出一个表格，表头为index，textContent，className
+        // 如果是数组的话，可以直接传入数组即可，let as=["dd",'aa',"wqw"]  console.table(as)，表头为index、value
+        // ----------元素面板-----------------
+        // 1. 可以按h，来实现影藏或显示元素；
+    </script>
+</body>
+</html>
