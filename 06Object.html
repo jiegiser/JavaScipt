@@ -1045,29 +1045,78 @@
         // 组合继承虽然是常用的模式，但存在缺陷，就是无论什么情况，都会调用两次超类型构造函数：
         // 一次是在创建子类型原型的时候，另一次是在子类型构造函数内部。子类型最终会包含超类型对象的全部实例属性
         // 但我们不得不在调用子类型构造函数时重写这些属性.比如下面的例子:
-        function SuperType(name){
-            this.name=name;
-            this.color=['red','green','blue'];
-        }
-        SuperType.prototype.sayName=function(){
-            console.log(this.name);
-        }
-        function SubType(name,age){
-            SuperType.call(this,name);//第二次调用SuperType
-            this.age=age;
-        }
-        SubType.prototype=new SuperType();//第一次调用SuperType
-        SubType.prototype.constructor=SubType;
-        SubType.prototype.sayAge=function(){
-            console.log(this.age);
-        }
+        // function SuperType(name){
+        //     this.name=name;
+        //     this.color=['red','green','blue'];
+        // }
+        // SuperType.prototype.sayName=function(){
+        //     console.log(this.name);
+        // }
+        // function SubType(name,age){
+        //     // 继承属性
+        //     SuperType.call(this,name);//第二次调用SuperType
+        //     this.age=age;
+        // }
+        // // 继承方法
+        // SubType.prototype=new SuperType();//第一次调用SuperType
+        // SubType.prototype.constructor=SubType;
+        // SubType.prototype.sayAge=function(){
+        //     console.log(this.age);
+        // }
         // 在第一次调用的时候，SubType.prototype会得到两个属性：name和color，他们都是SuperType的实例属性。
         // 只不过现在位于SubType的原型中，当调用SubType构造函数时，又会在调用一次SuperType构造函数，这一次又在新对象
         // 上创建了实例属性name和color。于是，这两个属性就屏蔽了原型中的两个同名属性。
-        // 通过借用构造函数来继承属性，通过原型链的混成形式来继承方法，其背后的基本思想是：不必为了指定子类型的原型而调用
+        
+        
+
+        // 所谓寄生组合式继承通过借用构造函数来继承属性，通过原型链的混成形式来继承方法，其背后的基本思想是：不必为了指定子类型的原型而调用
         // 超类型的构造函数，我们所需要的无非就是超类型原型的一个副本而已，本质上，就是使用寄生式继承来继承超类型的原型，然后
         // 再将结果指定更给子类型的原型。
-        // 如下代码
+        
+        // // 寄生组合式继承的基本模式如下模式：
+        // function object(o) {
+        //     // 创建临时性的构造函数，然后将传入的对象作为构造函数的原型，最后返回了这个临时类的一个新实例。从本质上将，
+        //     // object()对传入的其中的对象执行了一次浅复制。
+        //     function F() {}
+        //     F.prototype = o;
+        //     return new F();
+
+        // }
+        // inheritPrototype实现了寄生组合式继承的最简单的形式，
+        // 他接收两个参数，子类型构造函数和超类型构造函数。
+        // function inheritPrototype(subType,superType){
+        //     // 第一步：创建超类型原型的一个副本，
+        //     let prototype=object(superType.prototype);//创建对象
+        //     // 第二步：为创建的副本添加constructor属性，使得继承子类型构造函数的方法以及属性
+        //     // 弥补因重写原型为失去的的默认的constructor属性
+        //     // 增强对象
+        //     prototype.constructor=subType;
+        //     // 第三步：将新创建的对象（也就是副本）赋值给予子类型的原型，
+        //     // 指定对象
+        //     subType.prototype=prototype;
+        // }
+        // 这样可以通过inheritPrototype函数，替换前面例子中为子类型原型赋值的语句了。
+        // function SuperType(name){
+        //     this.name=name;
+        //     this.color=["red", "blue", "green"];
+        // }
+        // SuperType.prototype.sayName=function() {
+        //     console.log(this.name);
+        // }
+        // function SubType(name,age){
+        //     SuperType.call(this,name);
+        //     this.age=age;
+        // }
+        // inheritPrototype(SubType,SuperType);
+        // SubType.prototype.sayAge=function() {
+        //     console.log(this.age);
+        // }
+        // console.log(SubType);
+        // console.log(SuperType);
+        // const instance=new SubType('jiegiser',18);
+        // console.log(instance);//SubType {name: "jiegiser", color: Array(3), age: 18}
+        // 上面的高效体现在它之调用了一次supertype构造函数，因此避免了在SubType.prototype上面创建不必要的、多余的属性。与此同时，
+        // 原型链还能保持不变，因此，还能够正常使用instanceof以及isProrotypeOf方法。这个开发模式，普遍认为是引用类型最理想的继承。
     </script>
 </body>
 
