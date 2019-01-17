@@ -42,18 +42,18 @@
         </div>
         <script>
             // 这样使用一条语句可以定义多个变量
-            var message = 'hi',
-                found = false,
-                age = 29;
-            function test(){
-                var re='hi';
-            }
+            // var message = 'hi',
+            //     found = false,
+            //     age = 29;
+            // function test(){
+            //     var re='hi';
+            // }
             // alert(re);//报错re is not defined
             // ecmascript有七种数据类型undefined、null、Boolean、Number、String、Symbol、Set
 
 
 
-            var say;
+            // var say;
             // console.log(say);//undefined
             // console.log(arr);//会报错  arr is not defined
 
@@ -69,13 +69,39 @@
             // console.log(ObNnull);//null,判断是否为null，只需要==null，就可以
 
 
-            console.log(Boolean("ddddd"));//Boolean转换为boolean类型
-            console.log(Boolean(''));//false
-            console.log(Boolean(null));//false
-            console.log(Boolean(NaN));//false
-            console.log(Boolean(0));//false
-            console.log(Boolean(undefined));//false
+            // console.log(Boolean("ddddd"));//Boolean转换为boolean类型
+            // console.log(Boolean(''));//false
+            // console.log(Boolean(null));//false
+            // console.log(Boolean(NaN));//false
+            // console.log(Boolean(0));//false
+            // console.log(Boolean(undefined));//false
 
+
+            // 2019-1-17
+            // 任何数据类型的值调用Bollean函数，都会返回一个Boolean值，这里需要注意的是，数值中，0跟NaN返回的为false
+            // Number类型
+            // 注意八进制的其前面第一个为0，然后后面是0到7，如果前面是0，后面的数值超过了7，那就是十进制了；
+            // 十六进制的前两位必须是0x，
+            // let hex=0xA;
+            // console.log(hex);//10
+            // // 在进行算数计算的时候，所有八进制以及十六进制的都会转换为十进制的数值。
+            // let hex1=+0;
+            // let hex2=-0;
+            // console.log(hex1);
+            // console.log(hex2);
+            // console.log(hex1==hex2)//true
+            // console.log(hex1===hex2)//true
+
+            // ------科学计数法
+            // let floatname=3.12e7;
+            // console.log(floatname);//31200000也就是3.12乘以10的7次方
+            // 浮点数值的最高精度为17位小数，但在进行算数计算的时候，他的精度远远不如整数，比如下面的：
+            // let float1=0.1;
+            // let float2=0.2;
+            // console.log(float1+float2);//0.30000000000000004
+
+
+            // ----数值范围--
         </script>
     </div>
 </body>
