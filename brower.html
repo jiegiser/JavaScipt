@@ -33,6 +33,24 @@
         // 如果是数组的话，可以直接传入数组即可，let as=["dd",'aa',"wqw"]  console.table(as)，表头为index、value
         // ----------元素面板-----------------
         // 1. 可以按h，来实现影藏或显示元素；
+        // 2. 想要看看页面的一部分在DOM树的不同部分是如何显示的时候，只需要拖动放置它到指定的位置；
+        // 3. 如果你只是想移动你当前选中的元素，在DOM结构中往上一点或者往下一点，而不是拖动和放置，你同样可以使用[ctrl]加上下键移动元素
+        // 4. 在元素面板中，跟word差不多一样，可以使用ctrl+v粘贴等，以及ctrl+z撤销，ctrl+shift+z重新编辑我们的修改
+        // ----------Command(命令)菜单-----------
+        // 1. 在chrome的调试打开的情况下，按住ctrl+shift+p可以打开command命令菜单。或者使用Devtools的dropdown按钮
+        // 2. 使用command命令菜单中的截屏。如果要对一个dom节点进行截屏，选择capture node screenshot，如果要使用全屏截图
+        // 使用capture full size screenshot。会直接将页面截取一个长图。
+        // 3. 在command命令菜单中输入layout，会出现两个选项，这两个选项就是设置我们的使用的面板的位置：横向面板布局、使用纵向面板布局、使用自动面板布局
+        // 注意当前显示的布局不会显示。
+        // 4. 快速切换主题：在 Commands菜单中寻找与 theme 相关的选项，以实现在明亮&暗黑两种主题之间的切换
+        // ----------异步console知识-------------
+        // 1. console本来就是默认被async包裹着的--可以直接视图awit等，比如Fetch等等
+        // 2. 在console查看系统的占用数以及空闲数，输入代码：await navigator.storage.estimate()结果：{quota: 15379114393, usage: 0}
+        // 获取设备的电池信息：console.table(await navigator.getBattery())；媒体能力：query={type:'file',audio:{contentType:'audio/ogg'}}
+        // console.table(await navigator.mediaCapabilities.decodingInfo(query))---有错误
+        // Cache storage keys(一般用来对Request和response进行缓存):await caches.keys()
+        // ----------Color picker（颜色选择器）-------------------
+        // 1. 
     </script>
 </body>
 </html>
