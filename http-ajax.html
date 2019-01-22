@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div>
+        <button onclick="updateName()">更新名字</button>
+        <p>我的名字是：<span id="name">Jieouba</span></p>
+    </div>
+    <script>
+        function updateName(){
+            axios.get("https://api.github.com/users").then(response=>{
+                //console.log("ss");
+                let name=response.data[0].login;
+                console.log(response.data[0].login);
+                document.getElementById('name').textContent=name;
+            })
+        }
+    </script>
+</body>
+</html>

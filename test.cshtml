@@ -1,0 +1,1830 @@
+
+@{
+    Layout = null;
+    var vSysVersion = "不动产登记信息管理系统";
+    ///获取是否显示查封
+    var IfShowZX = "0"; ///如果为0 则为默认的全部显示  ，1不显示查封，2只显示查封
+    ///获取是否显示权利人
+    var IfHidQLR = "0"; ///如果为0 则为默认的全部显示  1不显示权利人查询
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="@Url.Content("~/Scripts/jquery-1.11.3.min.js")" type="text/javascript"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/jquery/jquery-ui.css")" type="text/css"></link>
+    <script src="@Url.Content("~/Scripts/LandWeb.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/LandSite.js")" type="text/javascript"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/site.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/landweb/LandWeb.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/RealEstate/CaseLand.css")" type="text/css" />
+    <script src="@Url.Content("~/Scripts/LandWebTableGrid.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/RealEstate.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/themes/landweb/landwebTableGrid.css")" rel="stylesheet" type="text/css" />
+    <base target="_self" />
+    <script type="text/javascript">
+        var vBackGroundReadOnly = "";
+    </script>
+    <style>
+        .td-row-sgl {
+            background-color: #fff;
+            height: 26px;
+            text-align: left;
+            margin-right: 10px;
+            color: #293955;
+            font-weight: bold;
+            line-height: 26px;
+            border-bottom: 3px solid #45B6AF;
+            padding: 5px 9px;
+        }
+    </style>
+</head>
+<body>
+    <div class="doing_head">
+
+        <table class="table-sgl-form" style="margin: auto;">
+            <tr>
+                <td class="td-sgl-title-form">
+
+                    <dl class="btnLineDl">
+                        <dd>
+                            <a href="#" class="selected" name="7" style="text-align: center;">
+                                <span style="padding-left: 20px;">
+                                    全局综合查询
+                                </span>
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="#" name="1"><span style="padding-left: 25px;">不动产权信息</span></a>
+                        </dd>
+                        <dd>
+                            <a href="#" name="2"><span style="padding-left: 25px;">抵押权信息</span></a>
+                        </dd>
+                        <dd>
+                            <a href="#" name="3"><span style="padding-left: 30px;">查封信息</span></a>
+                        </dd>
+                        <dd>
+                            <a href="#" name="4"><span style="padding-left: 30px;">预告信息</span></a>
+                        </dd>
+                        <dd>
+                            <a href="#" name="5"><span style="padding-left: 30px;">异议信息</span></a>
+                        </dd>
+                        <dd>
+                            <a href="#" name="6"><span style="padding-left: 25px;">地役权信息</span></a>
+                        </dd>
+                        <dd>
+                            <a href="#" name="0"><span style="padding-left: 25px;"></span></a>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" class="td-sgl-title-form">
+                    <div></div>
+                    @*不动产登记*@
+                    <table class="table-sgl  query" style="width: 1000px;" id="tb_bdccx">
+                        <tr>
+                            <td colspan="3" class="td-row-sgl" style="vertical-align: middle;">
+                                <span style="float: left; vertical-align: middle;">搜索条件,支持多条件模糊查找 </span>
+                                <div style="float: right;">
+                                    <input type="button" value="批量打印不动产所有权基本信息" onclick="search()" class="btn_normal" style="width:205px;" />&nbsp;&nbsp;
+                                    <input type="button" value="查询" onclick="search()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                    <input type="button" value="导出" onclick="excel()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    案卷编号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="      (受理编号)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    宗地代码:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前19位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    测量号：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产单元号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    自然幢号:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前24位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产坐落：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    印刷序列号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    年度：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权证号：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px" placeholder="">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    产权人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    状态：
+                                </div>
+                                <select class="txt_normal" name="SelectState" style="width: 220px">
+                                    <option selected="selected" value="">--请选择--</option>
+                                    <option value="0">临时</option>
+                                    <option value="1">现势</option>
+                                    <option value="2">历史</option>
+                                    <option value="3">终止</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    义务人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    义务人证件号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    业务号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+
+                    </table>
+                    @*抵押登记*@
+                    <table class="table-sgl  query" style="width: 1000px; display: none" id="tb_dycx">
+                        <tr>
+                            <td colspan="3" class="td-row-sgl" style="vertical-align: middle;">
+                                <span style="float: left; vertical-align: middle;">搜索条件,支持多条件模糊查找 </span>
+                                <div style="float: right;">
+                                    <input type="button" value="批量打印不动产抵押信息" onclick="search()" class="btn_normal" style="width:165px;" />&nbsp;&nbsp;
+                                    <input type="button" value="查询" onclick="search()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                    <input type="button" value="导出" onclick="excel()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    案卷编号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="      (受理编号)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    宗地代码:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前19位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    测量号：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    抵押人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      抵押人证件号" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    年度：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    抵押权人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      抵押权人证件号" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权证号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    债务人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      债务人证件号" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产证明号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    印刷序列号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    抵押期限：
+                                </div>
+                                <input type="text" name="txtQLJSSJQ" class="text-border" onclick="getDate();" style="width: 100px" />
+                                到
+                                <input type="text" name="txtQLJSSJZ" class="text-border" onclick="getDate();" style="width: 100px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    登记日期：
+                                </div>
+                                <input type="text" name="txtQLJSSJQ" class="text-border" onclick="getDate();" style="width: 100px" />
+                                到
+                                <input type="text" name="txtQLJSSJZ" class="text-border" onclick="getDate();" style="width: 100px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    业务号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    状态：
+                                </div>
+                                <select class="txt_normal" name="SelectState" style="width: 220px">
+                                    <option selected="selected" value="">--请选择--</option>
+                                    <option value="0">临时</option>
+                                    <option value="1">现势</option>
+                                    <option value="2">历史</option>
+                                    <option value="3">终止</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @*查封登记*@
+                    <table class="table-sgl  query" style="width: 1000px; display: none" id="tb_cfcx">
+                        <tr>
+                            <td colspan="3" class="td-row-sgl" style="vertical-align: middle;">
+                                <span style="float: left; vertical-align: middle;">搜索条件,支持多条件模糊查找 </span>
+                                <div style="float: right;">
+                                    <input type="button" value="查询" onclick="search()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                    <input type="button" value="导出" onclick="excel()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    案卷编号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="      (受理编号)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    宗地代码:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前19位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    测量号：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产单元号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    自然幢号:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前24位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产坐落：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    查封法院：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    申请执行人：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权人：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px" placeholder="      (被执行人)">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    查封文号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    查封文件：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    年度：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权证号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    查封期限：
+                                </div>
+                                <input type="text" name="txtQLJSSJQ" class="text-border" onclick="getDate();" style="width: 100px" />
+                                到
+                                <input type="text" name="txtQLJSSJZ" class="text-border" onclick="getDate();" style="width: 100px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    登记日期：
+                                </div>
+                                <input type="text" name="txtQLJSSJQ" class="text-border" onclick="getDate();" style="width: 100px" />
+                                到
+                                <input type="text" name="txtQLJSSJZ" class="text-border" onclick="getDate();" style="width: 100px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    业务号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    状态：
+                                </div>
+                                <select class="txt_normal" name="SelectState" style="width: 220px">
+                                    <option selected="selected" value="">--请选择--</option>
+                                    <option value="0">临时</option>
+                                    <option value="1">现势</option>
+                                    <option value="2">历史</option>
+                                    <option value="3">终止</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @*地役权登记*@
+                    <table class="table-sgl  query" style="width: 1000px; display: none" id="tb_dyqcx">
+                        <tr>
+                            <td colspan="3" class="td-row-sgl" style="vertical-align: middle;">
+                                <span style="float: left; vertical-align: middle;">搜索条件,支持多条件模糊查找 </span>
+                                <div style="float: right;">
+                                    <input type="button" value="查询" onclick="search()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                    <input type="button" value="导出" onclick="excel()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    案卷编号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="      (受理编号)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    宗地代码:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前19位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    测量号：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产单元号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    自然幢号:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前24位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    需役地坐落：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    供役地权利人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    权利人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="     供役地权利人证件号" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    业务号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    需役地权利人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    权利人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="     需役地权利人证件号" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    状态：
+                                </div>
+                                <select class="txt_normal" name="SelectState" style="width: 220px">
+                                    <option selected="selected" value="">--请选择--</option>
+                                    <option value="0">临时</option>
+                                    <option value="1">现势</option>
+                                    <option value="2">历史</option>
+                                    <option value="3">终止</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @*异议登记*@
+                    <table class="table-sgl  query" style="width: 1000px; display: none" id="tb_yycx">
+                        <tr>
+                            <td colspan="3" class="td-row-sgl" style="vertical-align: middle;">
+                                <span style="float: left; vertical-align: middle;">搜索条件,支持多条件模糊查找 </span>
+                                <div style="float: right;">
+                                    <input type="button" value="查询" onclick="search()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                    <input type="button" value="导出" onclick="excel()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    案卷编号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="      (受理编号)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    宗地代码:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前19位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    测量号：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产单元号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    自然幢号:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前24位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产坐落：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    异议申请人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    申请人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    年度：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    异议义务人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="    (不动产权人)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    义务人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权证号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    业务号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder=" " />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    状态：
+                                </div>
+                                <select class="txt_normal" name="SelectState" style="width: 220px">
+                                    <option selected="selected" value="">--请选择--</option>
+                                    <option value="0">临时</option>
+                                    <option value="1">现势</option>
+                                    <option value="2">历史</option>
+                                    <option value="3">终止</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @*预告登记*@
+                    <table class="table-sgl  query" style="width: 1000px; display: none" id="tb_ygcx">
+
+                        <tr>
+                            <td colspan="3" class="td-row-sgl" style="vertical-align: middle;">
+                                <span style="float: left; vertical-align: middle;">搜索条件,支持多条件模糊查找 </span>
+                                <div style="float: right;">
+                                    <input type="button" value="批量打印不动产预告所有权基本信息" onclick="search()" class="btn_normal" style="width:230px;" />&nbsp;&nbsp;
+                                    <input type="button" value="批量打印不动产预告抵押抵押信息" onclick="search()" class="btn_normal" style="width:230px;" />&nbsp;&nbsp;
+                                    <input type="button" value="查询" onclick="search()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                    <input type="button" value="导出" onclick="excel()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    案卷编号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="      (受理编号)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    宗地代码:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前19位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    测量号：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产单元号：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    自然幢号:
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前24位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产坐落：
+                                </div>
+                                <input type="text" name="SelectDengJiLeiBie" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    预告权利人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    权利人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    印刷序列号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    预告义务人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    义务人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    年度：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    债务人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    债务人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产证明号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    抵押权人：
+                                </div>
+                                <input type="text" name="txtYeWuHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    抵押权人证件号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    登记日期：
+                                </div>
+                                <input type="text" name="txtQLJSSJQ" class="text-border" onclick="getDate();" style="width: 100px" />
+                                到
+                                <input type="text" name="txtQLJSSJZ" class="text-border" onclick="getDate();" style="width: 100px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    预告抵押期限：
+                                </div>
+                                <input type="text" name="txtQLJSSJQ" class="text-border" onclick="getDate();" style="width: 100px" />
+                                到
+                                <input type="text" name="txtQLJSSJZ" class="text-border" onclick="getDate();" style="width: 100px" />
+                            </td>
+                            <td class="td-title-sgl">
+                                <div style="width: 100px; float: left;">
+                                    业务号：
+                                </div>
+                                <input type="text" id="txt_ygqlrsfzh" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    预售/预抵：
+                                </div>
+                                <select class="txt_normal" name="SelectState" style="width: 220px">
+                                    <option selected="selected" value="">--请选择--</option>
+                                    <option value="0">预售</option>
+                                    <option value="1">预抵</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @*全局综合查询*@
+                    <table class="table-sgl  query" style="width: 1000px; display: none" id="tb_zxcx">
+                        <tr>
+                            <td colspan="3" class="td-row-sgl" style="vertical-align: middle;">
+                                <span style="float: left; vertical-align: middle;">搜索条件,支持多条件模糊查找 </span>
+                                <div style="float: right;">
+                                    <input type="button" value="查询" onclick="search()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                    <input type="button" value="导出" onclick="excel()" class="btn_normal" style="width:50px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    案卷编号：
+                                </div>
+                                <input type="text" name="txtAnJuanBianHao" class="text-border" style="width: 220px" placeholder="      (受理编号)" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    宗地代码:
+                                </div>
+                                <input type="text" name="txtZongDiDaiMa" class="text-border" style="width: 220px" placeholder="      不动产单元号前19位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    测量号：
+                                </div>
+                                <input type="text" name="txtCeLiangHao" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产单元号：
+                                </div>
+                                <input type="text" name="txtBuDongChanDanYuanHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    自然幢号:
+                                </div>
+                                <input type="text" name="txtZiRanZhuangHao" class="text-border" style="width: 220px" placeholder="      不动产单元号前24位" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产坐落：
+                                </div>
+                                <input type="text" name="txtBuDongChanZuoLuo" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    印刷序列号：
+                                </div>
+                                <input type="text" name="txtYinShuaXuHao" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    年度：
+                                </div>
+                                <input type="text" name="txtNianDu" class="text-border" style="width: 220px" placeholder="" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权证号：
+                                </div>
+                                <input type="text" name="txtBuDongChanQuanZhengHao" class="text-border" id="clh" style="width: 220px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    不动产权人：
+                                </div>
+                                <input type="text" name="txtBuDongChanQuanRen" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    产权人证件号：
+                                </div>
+                                <input type="text" name="txtChanQuanRenzhengJianHao" class="text-border" style="width: 220px" />
+                            </td>
+                            <td class="td-title-sgl" style="width: 330px">
+                                <div style="width: 100px; float: left;">
+                                    登记时间：
+                                </div>
+                                <input type="text" name="txtZHCXDJSSJQ" class="text-border" onclick="getDate();" style="width: 100px" />
+                                到
+                                <input type="text" name="txtZHCXDJSSJZ" class="text-border" onclick="getDate();" style="width: 100px" />
+                            </td>
+                        </tr>
+                    </table>
+                    @*查询结果显示*@
+                    <table class="table-sgl" style="width: 1000px; margin-top:5px;">
+                        <tr>
+                            @* 案卷信息按钮 *@
+                            <td align="center" class="td-row-sgl" style="width: 333px">
+                                <div style="float: left;">
+                                    <input type="button" value="楼层表" onclick="ShowLCB()" class="btn_normal" style="width:62px;" />&nbsp;&nbsp;
+                                    <input type="button" value="办理情况" onclick="BanLiQingKuang()" class="btn_normal" style="width:75px;" />&nbsp;&nbsp;
+                                    <input type="button" value="案卷情况" onclick="AnJuanQingKuang()" class="btn_normal" style="width:75px;" />&nbsp;&nbsp;
+                                </div>
+                            </td>
+                            <td align="center" class="td-row-sgl" style="text-align: center; width: 333px; border-left: 0;
+                            border-right: 0">
+                                搜索结果列表
+                            </td>
+                            <td align="right" class="td-row-sgl">
+                                <div style="margin-left: 30px; float: left;">
+                                    &nbsp;临时:
+                                </div>
+                                <div class="temporary_Sign" style="float: left; margin-top: 5px;margin-left: 5px">
+                                </div>
+                                <div style="float: left; margin-left: 5px;">
+                                    &nbsp;现势:
+                                </div>
+                                <div class="valid_Sign" style="float: left;  margin-top: 5px;margin-left: 5px">
+                                </div>
+                                <div style="float: left; margin-left: 5px; ">
+                                    &nbsp;历史:
+                                </div>
+                                <div class="history_Sign" style="float: left; margin-top: 5px;margin-left: 5px">
+                                </div>
+                                <div style="float: left; margin-left: 5px;">
+                                    &nbsp;终止:
+                                </div>
+                                <div class="unvalid_Sign" style="float: left; margin-top: 5px;margin-left: 5px">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="doing_body">
+                                    <div id="divRightType" class="top10Edge">
+                                        <table id="tableGrid" width="100%" border="0" cellpadding="0" cellspacing="0"></table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" id="dd_selectedvalue" />
+    </div>
+    <script type="text/javascript">
+        //初始化页面
+        $(function () {
+            var vSql = "select 代码名称,代码 from bdc_codetbl where 代码类型='登记类型' order by 代码 asc ";
+            $("#tableGrid").empty();
+            var gridProp = createtableGrid();
+            //BindTableGrid_Dd(1, 1);
+            $(".text-border").blur(function () {
+                var name = $(this).attr("name");
+                $("[name=" + name + "]").val($(this).val());
+            });
+            getData();
+            $("select[name='SelectState']").change(function () {
+                var i = $(this).children('option:selected').val();
+                $("select[name='SelectState']").val(i);
+            });
+        });
+        //创建表格
+        function createtableGrid() {
+            var vStrSql = "";
+            gridProp = null;
+            gridProp = new tableGrid("gridProp");
+            gridProp.ID = "tableGrid";
+            gridProp.FilterString = " 1>0 ";
+            gridProp.PageSize = 10; //设置页面显示行数
+            gridProp.OrderColumn = " 房号 "; //设置排序字段
+            gridProp.OrderType = " ASC ";
+            gridProp.IsPage = true; //是否分页
+            gridProp.Edit = false; //支持编辑
+            gridProp.initTable = function () {
+                //根据对应点击的信息进行选择查询
+                var selectedQLLX = $(".selected").attr("name");
+                BindTableGrid(selectedQLLX, 'selectPage');
+            };
+        }
+        var temp = 1;
+        //循环查询所有的权利，定位到有数据的权利标签上
+        function BindTableGrid(vQLLX, selectpage) {
+            //拼接查询条件
+            // 查询条件为空默认可以查询
+            gridProp.FilterString = " 1>0 ";
+            var vFilterString = GetFilterString(vQLLX);
+            if (!CheckObjectIsNull(vFilterString)) {
+                gridProp.FilterString += vFilterString;
+            }
+            var vModel = gridProp.getModel();
+            if (selectpage == "7") {
+                vModel.SelectPage = 7;
+            }
+            showMask();
+            $.post("GetCompositeQueryInfo?sQLLX=" + vQLLX, vModel, function (response) {
+                //$(".btnLineDl dd").find("a[name='" + vQLLX + "']").addClass("selected");
+                if (vQLLX == "1") {
+                    //显示不动产权信息
+                    Showtb_bdc();
+                } else if (vQLLX == "2") {
+                    //显示抵押权信息
+                    Showtb_dy();
+                } else if (vQLLX == "3") {
+                    //显示查封信息
+                    Showtb_cf();
+                } else if (vQLLX == "4") {
+                    //显示预告信息
+                    Showtb_yg();
+                } else if (vQLLX == "5") {
+                    //显示异议信息
+                    Showtb_yy();
+                } else if (vQLLX == "6") {
+                    //显示地役权信息
+                    Showtb_dyq();
+                }
+                else if (vQLLX == "7") {//增加注销 赵风 2016年10月19日
+                    //显示地役权信息
+                    Showtb_zx();
+                }
+
+                //循环显示，定位到到有数据的权利标签上
+                var iQLLX = parseInt(vQLLX);
+                if (!CheckObjectIsNull(response)) {
+                    gridProp.initGrid(JSON.parse(response));
+                    temp = 1;
+                    ShowQuery(iQLLX);
+                    if (vQLLX != vTable)
+                        $(".btnLineDl dd").find("a[name='" + vTable + "']").click();
+                }
+                else {
+                    if (!checkFilter() && temp < 7) {
+                        temp += 1;
+                        BindTableGrid((iQLLX + 1) % 6, 1);
+                    }
+                    else {
+                        gridProp.initGrid(JSON.parse("{\"DataCount\":\"0\",\"DataList\":\"\"}"));
+                        temp = 1;
+                        ShowQuery(iQLLX);
+                    }
+                }
+                hideMask();
+
+                var vTotelHight = $("td[class='grid-cell']").css("height");
+                var vHeight = (parseFloat(vTotelHight) - 12) / 2;
+                $("#tableGrid .temporary_Sign").css("margin-top", vHeight + "px");
+                $("#tableGrid .valid_Sign").css("margin-top", vHeight + "px");
+                $("#tableGrid .history_Sign").css("margin-top", vHeight + "px");
+                $("#tableGrid .unvalid_Sign").css("margin-top", vHeight + "px");
+            }, 'json');
+        }
+        function canView(obj) {
+            if (obj.indexOf("历史案卷录入") > -1) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        //格式化日期
+        function ConvertDate(vDate) {
+            if (vDate) {
+                return vDate.replace(" 0:00:00", "");
+            }
+            return "";
+        }
+        function CaseNoState(vCaseNo) {
+            var vStateSign = vCaseNo;
+            if (vStateSign == "0") {
+                vState = "<div style='margin:0 auto;width:100%;height:100%;text-align:center;' valign='middle'><div class='temporary_Sign' style='margin:0 auto; margin-top: 5px;'></div></div>";
+            }
+            else if (vStateSign == "1") {
+                vState = "<div style='margin:0 auto;width:100%;height:100%;text-align:center;' valign='middle'><div class='valid_Sign' style='margin:0 auto;'></div></div>";
+            }
+            else if (vStateSign == "2" || vStateSign == "4") {
+                vState = "<div style='margin:0 auto;width:100%;height:100%;text-align:center;' valign='middle'><div class='history_Sign' style='margin:0 auto;'></div></div>";
+            }
+            else {
+                vState = "<div style='margin:0 auto;width:100%;height:100%;text-align:center;' valign='middle'><div class='unvalid_Sign' style='margin:0 auto;'></div></div>";
+            }
+            return vState;
+        }
+        function ShowQuery(QLLX) {
+            $(".table-sgl.query").css("display", "none");
+            switch (QLLX) {
+                case 1:
+                    $("#tb_bdccx").css("display", "block");
+                    break;
+                case 2:
+                    $("#tb_dycx").css("display", "block");
+                    break;
+                case 3:
+                    $("#tb_cfcx").css("display", "block");
+                    break;
+                case 4:
+                    $("#tb_ygcx").css("display", "block");
+                    break;
+                case 5:
+                    $("#tb_yycx").css("display", "block");
+                    break;
+                case 6:
+                    $("#tb_dyqcx").css("display", "block");
+                    break;
+                case 7:
+                    $("#tb_zxcx").css("display", "block");
+                    break;
+            }
+        }
+        function search() {
+            //业务类型
+            var selectedQLLX = $(".selected").attr("name");
+            $("#tableGrid").empty();
+            var gridProp = createtableGrid();
+            BindTableGrid_Dd(selectedQLLX, 1);
+        }
+        var vTable = "";
+        $(".btnLineDl dd").click(function () {
+            $(".btnLineDl dd").find("a").removeClass("selected");
+            $(this).find("a").addClass("selected");
+            var selecteddd = $(".selected").attr("name");
+            vTable = selecteddd;
+            ShowQuery(parseInt(selecteddd));
+
+            //清除查询条件d
+            var selectedQLLX = $(".selected").attr("name");
+            $("#tableGrid").empty();
+            var gridProp = createtableGrid();
+            //BindTableGrid_Dd(selectedQLLX, 'selectPage');
+        });
+        //为标签的切换，不会循环查询所有权利，只查询当前的权利
+        /*
+        
+        */
+        function BindTableGrid_Dd(vQLLX, selectpage) {
+            //拼接查询条件
+            gridProp.FilterString = " 1>2 ";
+            // 查询条件为空默认可以查询 赵风 2016年10月24日
+            gridProp.FilterString = " 1>0 and SUBSYSTEMID=@Request.QueryString["subSystemId"]";
+            var vFilterString = GetFilterString(vQLLX);
+            if (!CheckObjectIsNull(vFilterString)) {
+                gridProp.FilterString = " 1>0 and SUBSYSTEMID=@Request.QueryString["subSystemId"] " + vFilterString;
+            }
+
+            var vModel = gridProp.getModel();
+            if (selectpage == "1") {
+                vModel.SelectPage = 1;
+            }
+            showMask();
+            $(".btnLineDl dd").find("a").removeClass("selected");
+            $.post("GetCompositeQueryInfo?sQLLX=" + vQLLX, vModel, function (response) {
+                $(".btnLineDl dd").find("a[name='" + vQLLX + "']").addClass("selected");
+                if (vQLLX == "1") {
+                    //显示不动产权信息
+                    Showtb_bdc();
+                } else if (vQLLX == "2") {
+                    //显示抵押权信息
+                    Showtb_dy();
+                } else if (vQLLX == "3") {
+                    //显示查封信息
+                    Showtb_cf();
+                } else if (vQLLX == "4") {
+                    //显示预告信息
+                    Showtb_yg();
+                } else if (vQLLX == "5") {
+                    //显示异议信息
+                    Showtb_yy();
+                } else if (vQLLX == "6") {
+                    //显示地役权信息
+                    Showtb_dyq();
+                } else if (vQLLX == "7") {
+                    //显示注销信息
+                    Showtb_zx();
+                }
+
+                //显示数据
+                if (!CheckObjectIsNull(response)) {
+                    gridProp.initGrid(JSON.parse(response));
+                }
+                else {
+                    gridProp.initGrid(JSON.parse("{\"DataCount\":\"0\",\"DataList\":\"\"}"));
+                }
+                hideMask();
+
+                var vTotelHight = $("td[class='grid-cell']").css("height");
+                var vHeight = (parseFloat(vTotelHight) - 12) / 2;
+                $("#tableGrid .temporary_Sign").css("margin-top", vHeight + "px");
+                $("#tableGrid .valid_Sign").css("margin-top", vHeight + "px");
+                $("#tableGrid .history_Sign").css("margin-top", vHeight + "px");
+                $("#tableGrid .unvalid_Sign").css("margin-top", vHeight + "px");
+            }, 'json');
+        }
+
+        //将页面上的查询条件凭借成查询字符串
+        /*
+        vQLLX为查询类型
+        */
+        function GetFilterString(vQLLX) {
+            var vFilterString = "";
+            //业务号
+            if (!CheckObjectIsNull($("[name=txtYeWuHao]:visible").val())) {
+                vFilterString += " and (业务号 like '%" + $("[name=txtYeWuHao]:visible").val().toUpperCase() + "%'" +
+                " or 业务号 like '%" + $("[name=txtYeWuHao]:visible").val().toLowerCase() + "%')";
+            }
+            //不动产单元号
+            if (!CheckObjectIsNull($("[name=txtBuDongChanDanYuanHao]:visible").val())) {
+                vFilterString += " and (不动产单元号 like '%" + $("[name=txtBuDongChanDanYuanHao]:visible").val().toUpperCase() + "%'" +
+                " or 不动产单元号 like '%" + $("[name=txtBuDongChanDanYuanHao]:visible").val().toLowerCase() + "%')";
+            }
+
+            ////受理编号
+            if (!CheckObjectIsNull($("[name=txtSLBH]:visible").val())) {
+                vFilterString += " and (受理编号 like '%" + $("[name=txtSLBH]:visible").val().toUpperCase() + "%'" +
+                " or 受理编号 like '%" + $("[name=txtSLBH]:visible").val().toLowerCase() + "%')";
+            }
+
+            var selectedQLLX = $(".selected").attr("name");
+            //登记类别
+            if (!CheckObjectIsNull($("[name=SelectDengJiLeiBie]:visible").val())) {
+
+                var djlbID = "";
+                switch (selectedQLLX) {
+                    case "1":
+                        djlbID = "djlb_bdc";
+                        break;
+                    case "2":
+                        djlbID = "djlb_dy";
+                        break;
+                    case "3":
+                        djlbID = "djlb_cf";
+                        break;
+                    case "4":
+                        djlbID = "djlb_yg";
+                        break;
+                    case "5":
+                        djlbID = "djlb_yy";
+                        break;
+                    case "6":
+                        djlbID = "djlb_dyq";
+                        break;
+                    case "7":
+                        djlbID = "djlb_zx";
+                        break;
+                    default:
+                        djlbID = "djlb_bdc";
+                        break;
+                }
+                vFilterString += " and 登记类别='" + $("#" + djlbID).find("option:selected").text() + "' ";
+            }
+            // 不动产登记证明号
+            if (selectedQLLX == "1" || selectedQLLX == "3") {
+                if (!CheckObjectIsNull($("[name=txtBuDongChanQuanZhengHao]:visible").val())) {
+                    vFilterString += " and  (不动产权证号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toUpperCase() + "%'" +
+                    " or 不动产权证号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toLowerCase() + "%')";
+                }
+            }
+            else {
+                if (!CheckObjectIsNull($("[name=txtBuDongChanQuanZhengHao]:visible").val())) {
+                    vFilterString += " and  (不动产登记证明号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toUpperCase() + "%'" +
+                    " or 不动产登记证明号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toLowerCase() + "%')";
+                }
+            }
+            ////不动产登记证明号
+            //if (!CheckObjectIsNull($("[name=txtBuDongChanQuanZhengHao]:visible").val())) {
+            //    vFilterString += " and  (不动产登记证明号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toUpperCase() + "%'" +
+            //    " or 不动产登记证明号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toLowerCase() + "%'" +
+            //    " or 原不动产权证号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toUpperCase() + "%'" +
+            //    " or 原不动产权证号 like '%" + $("[name=txtBuDongChanQuanZhengHao]:visible").val().toLowerCase() + "%')";
+            //}
+            // 坐落
+            if (!CheckObjectIsNull($("[name=txt_zl]:visible").val())) {
+                vFilterString += " and  (坐落 like '%" + $("[name=txt_zl]:visible").val().toUpperCase() + "%'" +
+                " or 坐落 like '%" + $("[name=txt_zl]:visible").val().toLowerCase() + "%')";
+            }
+            //登记时间起
+            if (!CheckObjectIsNull($("[name=txtDengJiRiQiQi]:visible").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 登记时间>=to_date('" + $("[name=txtDengJiRiQiQi]:visible").val() + "','yyyy-mm-dd')  ";
+                } else {
+                    vFilterString += " and 登记时间>='" + $("[name=txtDengJiRiQiQi]:visible").val() + "'  ";
+                }
+            }
+            //登记时间止
+            if (!CheckObjectIsNull($("[name=txtDengJiRiQiZhi]:visible").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 登记时间<=to_date('" + $("[name=txtDengJiRiQiZhi]:visible").val() + "','yyyy-mm-dd') ";
+                } else {
+                    vFilterString += " and 登记时间<='" + $("[name=txtDengJiRiQiZhi]:visible").val() + "' ";
+                }
+            }
+            //查封时间起
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_cfsjq").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 查封时间>=to_date('" + $("#txt_cfsjq").val() + "','yyyy-mm-dd')  ";
+                } else {
+                    vFilterString += " and 查封时间>='" + $("#txt_cfsjq").val() + "'  ";
+                }
+            }
+            //查封时间止
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_cfsjz").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 查封时间<=to_date('" + $("#txt_cfsjz").val() + "','yyyy-mm-dd')  ";
+                } else {
+                    vFilterString += " and 查封时间<='" + $("#txt_cfsjz").val() + "'  ";
+                }
+            }
+            //权利起始时间起
+            if (!CheckObjectIsNull($("[name=txtQLQSSJQ]:visible").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 起始时间>=to_date('" + $("[name=txtQLQSSJQ]:visible").val() + "','yyyy-mm-dd')  ";
+                } else {
+                    vFilterString += " and 起始时间>='" + $("[name=txtQLQSSJQ]:visible").val() + "'  ";
+                }
+            }
+            //权利起始时间止
+            if (!CheckObjectIsNull($("[name=txtQLQSSJZ]:visible").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 起始时间<=to_date('" + $("[name=txtQLQSSJZ]:visible").val() + "','yyyy-mm-dd') ";
+                } else {
+                    vFilterString += " and 起始时间<='" + $("[name=txtQLQSSJZ]:visible").val() + "' ";
+                }
+            }
+            //权利结束时间起
+            if (!CheckObjectIsNull($("[name=txtQLJSSJQ]:visible").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 结束时间>=to_date('" + $("[name=txtQLJSSJQ]:visible").val() + "','yyyy-mm-dd') ";
+                } else {
+                    vFilterString += " and 结束时间>='" + $("[name=txtQLJSSJQ]:visible").val() + "' ";
+                }
+            }
+            //权利结束时间止
+            if (!CheckObjectIsNull($("[name=txtQLJSSJZ]:visible").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 结束时间<=to_date('" + $("[name=txtQLJSSJZ]:visible").val() + "','yyyy-mm-dd') ";
+                } else {
+                    vFilterString += " and 结束时间<='" + $("[name=txtQLJSSJZ]:visible").val() + "' ";
+                }
+            }
+            if (vQLLX == "1" && !CheckObjectIsNull($("#txt_qlr").val())) {
+                vFilterString += " and    业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 in ('权利人','原权利人') and 权利人名称 like '%" + $("#txt_qlr").val() + "%')";
+            }
+            if (vQLLX == "1" && !CheckObjectIsNull($("#txt_qlrsfzh").val())) {
+                vFilterString += " and  业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 in ('权利人','原权利人') and (证件号 like '%" + $("#txt_qlrsfzh").val().toUpperCase() + "%'" +
+                " or 证件号 like '%" + $("#txt_qlrsfzh").val().toLowerCase() + "%' )) ";
+
+            }
+            if (vQLLX == "2" && !CheckObjectIsNull($("#txt_dyr").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '抵押人' and 权利人名称 like '%" + $("#txt_dyr").val() + "%')";
+            }
+            if (vQLLX == "2" && !CheckObjectIsNull($("#txt_dyrsfzh").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '抵押人'  and  (证件号 like '%" + $("#txt_dyrsfzh").val().toUpperCase() + "%'" +
+                " or 证件号 like '%" + $("#txt_dyrsfzh").val().toLowerCase() + "%'))";
+            }
+            if (vQLLX == "2" && !CheckObjectIsNull($("#txt_dyqr").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '抵押权人' and 权利人名称 like '%" + $("#txt_dyqr").val() + "%')";
+            }
+            if (vQLLX == "4" && !CheckObjectIsNull($("#txt_ygqlr").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '预告权利人' and 权利人名称 like '%" + $("#txt_ygqlr").val() + "%')";
+            }
+            if (vQLLX == "4" && !CheckObjectIsNull($("#txt_ygqlrsfzh").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '预告权利人'  and  (证件号 like '%" + $("#txt_ygqlrsfzh").val().toUpperCase() + "%'" +
+                " or 证件号 like '%" + $("#txt_ygqlrsfzh").val().toLowerCase() + "%'))";
+            }
+            if (vQLLX == "4" && !CheckObjectIsNull($("#txt_ygywr").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '预告义务人' and 权利人名称 like '%" + $("#txt_ygywr").val() + "%')";
+            }
+            if (vQLLX == "4" && !CheckObjectIsNull($("#txt_ygywrsfzh").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '预告义务人'  and  (证件号 like '%" + $("#txt_ygywrsfzh").val().toUpperCase() + "%'" +
+                " or 证件号 like '%" + $("#txt_ygywrsfzh").val().toLowerCase() + "%'))";
+            }
+            if (vQLLX == "5" && !CheckObjectIsNull($("#txt_yysqr").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '异议申请人' and 权利人名称 like '%" + $("#txt_yysqr").val() + "%')";
+            }
+            if (vQLLX == "5" && !CheckObjectIsNull($("#txt_yysqrsfzh").val())) {
+                vFilterString += " and 业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '异议申请人'  and  (证件号 like '%" + $("#txt_yysqrsfzh").val().toUpperCase() + "%'" +
+                " or 证件号 like '%" + $("#txt_yysqrsfzh").val().toLowerCase() + "%'))";
+            }
+
+            //抵押权 顺位
+            if (vQLLX == "2" && !CheckObjectIsNull($("#txt_dysw").val())) {
+                vFilterString += " and (抵押顺位 like '%" + $("#txt_dysw").val().toUpperCase() + "%'" +
+                " or 抵押顺位 like '%" + $("#txt_dysw").val().toLowerCase() + "%')";
+            }
+            //查封 查封文号
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_cfwh").val())) {
+                vFilterString += " and (查封文号 like '%" + $("#txt_cfwh").val().toUpperCase() + "%'" +
+                " or 查封文号 like '%" + $("#txt_cfwh").val().toLowerCase() + "%')";
+            }
+            //查封 解封业务号
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_jfywh").val())) {
+                vFilterString += " and (解封业务号 like '%" + $("#txt_jfywh").val().toUpperCase() + "%'" +
+                " or 解封业务号 like '%" + $("#txt_jfywh").val().toLowerCase() + "%')";
+            }
+            //查封 解封文号
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_jfwh").val())) {
+                vFilterString += " and (解封文号 like '%" + $("#txt_jfwh").val().toUpperCase() + "%'" +
+                " or 解封文号 like '%" + $("#txt_jfwh").val().toLowerCase() + "%')";
+            }
+            //查封 解封时间起
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_jfsjq").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 解封时间>=to_date('" + $("#txt_jfsjq").val() + "','yyyy-mm-dd') ";
+                } else {
+                    vFilterString += " and 解封时间>='" + $("#txt_jfsjq").val() + "' ";
+                }
+            }
+            //查封 解封时间止
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_jfsjz").val())) {
+                if ("@ViewBag.DBType" == "ORACLE") {
+                    vFilterString += " and 解封时间<=to_date('" + $("#txt_jfsjz").val() + "','yyyy-mm-dd') ";
+                } else {
+                    vFilterString += " and 解封时间<='" + $("#txt_jfsjz").val() + "' ";
+                }
+            }
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_CFqlr").val())) {
+                vFilterString += " and    业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '权利人' and 权利人名称 like '%" + $("#txt_CFqlr").val() + "%')";
+            }
+            if (vQLLX == "3" && !CheckObjectIsNull($("#txt_CFqlrsfzh").val())) {
+                vFilterString += " and  业务号 in (select distinct 业务号 from bdc_qlr where 权利人类别 = '权利人'  and (证件号 like '%" + $("#txt_CFqlrsfzh").val().toUpperCase() + "%'" +
+                " or 证件号 like '%" + $("#txt_CFqlrsfzh").val().toLowerCase() + "%' )) ";
+            }
+            if (!CheckObjectIsNull($("[name=SelectState]:visible").val())) {
+                if ($("[name=SelectState]:visible").val() == "2") {
+                    vFilterString += " and 权属状态 in ('2','4') ";
+                } else {
+                    vFilterString += " and 权属状态='" + $("[name=SelectState]:visible").val() + "' ";
+                }
+            }
+            return vFilterString;
+        }
+
+        //显示不动产权信息
+        function Showtb_bdc() {
+            gridProp.HeadArr = new Array({ text: "业务号", width: "110px" },
+            { text: "登记类别", width: "100px" },
+            { text: "不动产单元号", width: "100px" },
+            { text: "不动产权证号", width: "100px" },
+            { text: "权利起始时间", width: "90px" },
+            { text: "权利结束时间", width: "90px" },
+            { text: "登记时间", width: "90px", orderColumn: "登记时间 " },
+            { text: "权利人", width: "100px" },
+            { text: "档案号", width: "60px" },
+            { text: "坐落", width: "120px" },
+            { text: "状态", width: "50px" },
+            { text: "详细", width: "50px" },
+            { text: "历史", width: "50px" });
+            gridProp.ColumnArr = new Array({ columnType: "lab", name: "业务号" },
+            { columnType: "lab", name: "登记类别" },
+            { columnType: "lab", name: "不动产单元号" },
+            { columnType: "lab", name: "不动产权证号" },
+            { columnType: "lab", key: "起始时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "结束时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "登记时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "权利人" },
+            { columnType: "lab", name: "档案号" },
+            { columnType: "lab", name: "坐落" },
+            { columnType: "lab", key: "权属状态", bindFunName: CaseNoState },
+            { columnType: "btn", key: "业务号", funName: "caseView", checkDisableFunName: canView, enableKey: "登记类别", text: "查看" },
+            { columnType: "btn", key: "不动产单元号", funName: "historyView", text: "查看" });
+        }
+
+        //显示抵押权信息
+        function Showtb_dy() {
+            gridProp.HeadArr = new Array({ text: "业务号", width: "80px" },
+            { text: "登记类别", width: "100px" },
+            { text: "不动产单元号", width: "100px" },
+            { text: "登记证明号", width: "100px" },
+            { text: "印刷序列号", width: "100px" },
+            { text: "权利起始时间", width: "100px" },
+            { text: "权利结束时间", width: "100px" },
+            { text: "登记时间", width: "90px", orderColumn: "登记时间 " },
+            { text: "抵押权人", width: "90px" },
+            { text: "抵押人", width: "90px" },
+            { text: "抵押顺位", width: "70px" },
+            { text: "档案号", width: "60px" },
+            { text: "坐落", width: "150px" },
+            { text: "状态", width: "50px" },
+            { text: "详细", width: "50px" },
+            { text: "历史", width: "50px" });
+            gridProp.ColumnArr = new Array({ columnType: "lab", name: "业务号" },
+            { columnType: "lab", name: "登记类别" },
+            { columnType: "lab", name: "不动产单元号" },
+            { columnType: "lab", name: "不动产登记证明号" },
+            { columnType: "lab", name: "印刷序列号" },
+            { columnType: "lab", key: "起始时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "结束时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "登记时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "抵押权人" },
+            { columnType: "lab", name: "抵押人" },
+            { columnType: "lab", name: "抵押顺位" },
+            { columnType: "lab", name: "档案号" },
+            { columnType: "lab", name: "坐落" },
+            { columnType: "lab", key: "权属状态", bindFunName: CaseNoState },
+            { columnType: "btn", key: "业务号", funName: "caseView", checkDisableFunName: canView, enableKey: "登记类别", text: "查看" },
+            { columnType: "btn", key: "不动产单元号", funName: "historyView", text: "查看" });
+        }
+
+        //显示查封信息
+        function Showtb_cf() {
+            gridProp.HeadArr = new Array({ text: "业务号", width: "80px" },
+            { text: "查封类型", width: "100px" },
+            { text: "不动产单元号", width: "100px" },
+             //{ text: "登记证明号", width: "80px" },
+            { text: "权利人（被查封人）", width: "80px" },
+            { text: "起始时间", width: "90px" },
+            { text: "结束时间", width: "90px" },
+            { text: "查封时间", width: "90px", orderColumn: "登记时间 " },
+            { text: "查封文号", width: "80px" },
+            { text: "解封业务号", width: "80px" },
+            { text: "解封文号", width: "80px" },
+            { text: "解封时间", width: "90px" },
+            { text: "档案号", width: "60px" },
+            { text: "坐落", width: "130px" },
+            { text: "状态", width: "50px" },
+            { text: "详细", width: "50px" },
+            { text: "历史", width: "50px" });
+            gridProp.ColumnArr = new Array({ columnType: "lab", name: "业务号" },
+            { columnType: "lab", name: "查封类型" },
+            { columnType: "lab", name: "不动产单元号" },
+            //{ columnType: "lab", name: "不动产登记证明号" },
+            { columnType: "lab", name: "权利人" },
+            { columnType: "lab", key: "起始时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "结束时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "查封时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "查封文号" },
+            { columnType: "lab", name: "解封业务号" },
+            { columnType: "lab", name: "解封文号" },
+            { columnType: "lab", key: "解封时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "档案号" },
+            { columnType: "lab", name: "坐落" },
+            { columnType: "lab", key: "权属状态", bindFunName: CaseNoState },
+            { columnType: "btn", key: "业务号", funName: "caseView", checkDisableFunName: canView, enableKey: "登记类别", text: "查看" },
+            { columnType: "btn", key: "不动产单元号", funName: "historyView", text: "查看" });
+        }
+
+        //显示预告信息
+        function Showtb_yg() {
+            gridProp.HeadArr = new Array({ text: "业务号", width: "100px" },
+            { text: "登记类别", width: "100px" },
+            { text: "不动产单元号", width: "100px" },
+            { text: "登记证明号", width: "100px" },
+            { text: "权利起始时间", width: "100px" },
+            { text: "权利结束时间", width: "100px" },
+            { text: "登记时间", width: "90px", orderColumn: "登记时间 " },
+            { text: "预告义务人(预告抵押权人)", width: "90px" },
+            { text: "预告权利人(债务人)", width: "90px" },
+            { text: "档案号", width: "60px" },
+            { text: "坐落", width: "120px" },
+            { text: "状态", width: "50px" },
+            { text: "详细", width: "50px" },
+            { text: "历史", width: "50px" });
+            gridProp.ColumnArr = new Array({ columnType: "lab", name: "业务号" },
+            { columnType: "lab", name: "登记类别" },
+            { columnType: "lab", name: "不动产单元号" },
+            { columnType: "lab", name: "不动产登记证明号" },
+            { columnType: "lab", key: "起始时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "结束时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "登记时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "预告义务人" },
+            { columnType: "lab", name: "预告权利人" },
+            { columnType: "lab", name: "档案号" },
+            { columnType: "lab", name: "坐落" },
+            { columnType: "lab", key: "权属状态", bindFunName: CaseNoState },
+            { columnType: "btn", key: "业务号", funName: "caseView", checkDisableFunName: canView, enableKey: "登记类别", text: "查看" },
+            { columnType: "btn", key: "不动产单元号", funName: "historyView", text: "查看" });
+        }
+
+        //显示异议信息
+        function Showtb_yy() {
+            gridProp.HeadArr = new Array({ text: "业务号", width: "100px" },
+            { text: "登记类别", width: "100px" },
+            { text: "不动产单元号", width: "100px" },
+            { text: "登记证明号", width: "100px" },
+            { text: "权利起始时间", width: "100px" },
+            { text: "权利结束时间", width: "90px" },
+            { text: "登记时间", width: "90px", orderColumn: "登记时间 " },
+            { text: "异议申请人", width: "90px" },
+            { text: "档案号", width: "60px" },
+            { text: "坐落", width: "120px" },
+            { text: "状态", width: "50px" },
+            { text: "详细", width: "50px" },
+            { text: "历史", width: "50px" });
+            gridProp.ColumnArr = new Array({ columnType: "lab", name: "业务号" },
+            { columnType: "lab", name: "登记类别" },
+            { columnType: "lab", name: "不动产单元号" },
+            { columnType: "lab", name: "不动产登记证明号" },
+            { columnType: "lab", key: "起始时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "结束时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "登记时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "异议申请人" },
+            { columnType: "lab", name: "档案号" },
+            { columnType: "lab", name: "坐落" },
+            { columnType: "lab", key: "权属状态", bindFunName: CaseNoState },
+            { columnType: "btn", key: "业务号", funName: "caseView", checkDisableFunName: canView, enableKey: "登记类别", text: "查看" },
+            { columnType: "btn", key: "不动产单元号", funName: "historyView", text: "查看" });
+        }
+
+        //显示地役权信息
+        function Showtb_dyq() {
+            gridProp.HeadArr = new Array({ text: "业务号", width: "90px" },
+            { text: "登记类别", width: "90px" },
+            { text: "不动产单元号", width: "100px" },
+            { text: "登记证明号", width: "90px" },
+            { text: "权利起始时间", width: "90px" },
+            { text: "权利结束时间", width: "90px" },
+            { text: "登记时间", width: "90px", orderColumn: "登记时间 " },
+            { text: "档案号", width: "60px" },
+            { text: "坐落", width: "100px" },
+            { text: "状态", width: "50px" },
+            { text: "详细", width: "50px" },
+            { text: "历史", width: "50px" });
+            gridProp.ColumnArr = new Array({ columnType: "lab", name: "业务号" },
+            { columnType: "lab", name: "登记类别" },
+            { columnType: "lab", name: "不动产单元号" },
+            { columnType: "lab", name: "不动产登记证明号" },
+            { columnType: "lab", key: "起始时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "结束时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "登记时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "档案号" },
+            { columnType: "lab", name: "坐落" },
+            { columnType: "lab", key: "权属状态", bindFunName: CaseNoState },
+            { columnType: "btn", key: "业务号", funName: "caseView", checkDisableFunName: canView, enableKey: "登记类别", text: "查看" },
+            { columnType: "btn", key: "不动产单元号", funName: "historyView", text: "查看" });
+        }
+
+        //显示注销信息
+        function Showtb_zx() {
+            gridProp.HeadArr = new Array({ text: "业务号", width: "90px" },
+            { text: "登记类别", width: "90px" },
+            { text: "不动产单元号", width: "100px" },
+            { text: "登记证明号", width: "90px" },
+            { text: "起始时间", width: "90px" },
+            { text: "结束时间", width: "90px" },
+            { text: "登记时间", width: "90px", orderColumn: "登记时间 " },
+            { text: "档案号", width: "60px" },
+            { text: "坐落", width: "100px" },
+            { text: "状态", width: "50px" },
+            { text: "详细", width: "50px" },
+            { text: "历史", width: "50px" });
+            gridProp.ColumnArr = new Array({ columnType: "lab", name: "业务号" },
+            { columnType: "lab", name: "登记类别" },
+            { columnType: "lab", name: "不动产单元号" },
+            { columnType: "lab", name: "不动产登记证明号" },
+            { columnType: "lab", key: "起始时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "结束时间", bindFunName: ConvertDate },
+            { columnType: "lab", key: "登记时间", bindFunName: ConvertDate },
+            { columnType: "lab", name: "档案号" },
+            { columnType: "lab", name: "坐落" },
+            { columnType: "lab", key: "权属状态", bindFunName: CaseNoState },
+            { columnType: "btn", key: "业务号", funName: "caseView", checkDisableFunName: canView, enableKey: "登记类别", text: "查看" },
+            { columnType: "btn", key: "不动产单元号", funName: "historyView", text: "查看" });
+        }
+
+        function checkFilter() {
+            var filter = gridProp.FilterString;
+            if (filter.indexOf('解封时间') != -1) {
+                return true;
+            }
+            if (filter.indexOf('解封文号') != -1) {
+                return true;
+            }
+            if (filter.indexOf('查封文号') != -1) {
+                return true;
+            }
+            if (filter.indexOf('抵押顺位') != -1) {
+                return true;
+            }
+            //if (filter.indexOf('坐落') != -1) {
+            //    return true;
+            //}
+            if (filter.indexOf('异议申请人') != -1) {
+                return true;
+            }
+            if (filter.indexOf('预告义务人') != -1) {
+                return true;
+            }
+            if (filter.indexOf('预告权利人') != -1) {
+                return true;
+            }
+            if (filter.indexOf('抵押权人') != -1) {
+                return true;
+            }
+            if (filter.indexOf('抵押人') != -1) {
+                return true;
+            }
+            if (filter.indexOf('权利人') != -1) {
+                return true;
+            }
+            if (filter.indexOf('查封时间') != -1) {
+                return true;
+            }
+            if (filter.indexOf('登记类别') != -1) {
+                return true;
+            }
+            return false;
+        }
+
+        //查看详细
+        function caseView(item) {
+            var vCaseNo = "";
+            var vSql = "";
+            vCaseNo = $(item).attr("nodeid");
+            var url = "";
+            var vtype = "0";
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: "../Public/GetSLBH?sCaseNo=" + vCaseNo,
+                datatype: "text",
+                success: function (res) {
+                    if (vCaseNo == res) {
+                        vtype = "1";
+                        url = "RealEstate/Public/CaseListInfo?CaseNo=" + vCaseNo;
+                    } else {
+                        vCaseNo = res;
+                        url = "Case/CaseListInfo?CaseNo=" + vCaseNo;
+                    }
+                }
+            });
+            if (window.top.sysCreateTab) {
+                if (vtype == "1") {
+                    window.top.sysCreateTab("caseListInfo", "RealEstate/Public/CaseListInfo", "案卷办理过程", url);
+                } else {
+                    if ("@Request.QueryString["IsEdit"]" == "1") {
+                        $.post("../Public/SaveEditHistory?strCaseNo=" + vCaseNo, function (res) {
+                            if (res) {
+                                window.top.sysCreateTab("caseListInfo", "Case/CaseListInfo?IsEdit=1", "案卷办理过程", url + "&IsEdit=1");
+                            }
+                        });
+                    }
+                    else {
+                        window.top.sysCreateTab("caseListInfo", "Case/CaseListInfo", "案卷办理过程", url);
+                    }
+                }
+            }
+        }
+
+        //查看历史
+        function historyView(item) {
+            var vCaseNo = "";
+            var vSql = "";
+            vCaseNo = $(item).attr("nodeid");
+            var url = "/RealEstate/BDCQuery/BDCQueryBDCDY?sDYH=" + encodeURIComponent(vCaseNo);
+            if (window.top.sysCreateTab) {
+                window.top.sysCreateTab("BDCQueryBDCDY", "/RealEstate/BDCQuery/BDCQueryBDCDY", "不动产单元历史信息", url);
+            }
+        }
+
+        //导出查询结果到excel
+        function excel() {
+            showMask();
+            var vPath = "";
+            var vQLLX = $(".selected").attr("name");
+            var vModel = gridProp.getModel();
+            vModel.PageSize = 0;
+            $.post("ExportCompositeQueryInfo?sQLLX=" + vQLLX, vModel, function (res) {
+                hideMask();
+                vPath = encodeURIComponent(res);
+                window.open(_path + "/" + vPath, "_blank");
+            }, "text");
+
+        }
+    </script>
+</body>
+</html>

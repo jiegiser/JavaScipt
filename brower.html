@@ -50,7 +50,14 @@
         // console.table(await navigator.mediaCapabilities.decodingInfo(query))---有错误
         // Cache storage keys(一般用来对Request和response进行缓存):await caches.keys()
         // ----------Color picker（颜色选择器）-------------------
-        // 1. 
+        // 1. 颜色选择器，也就是我们点击css样式的时候，会出现一个颜色，然后我们点击那个颜色，颜色选择器就会出现。使用颜色选择器
+        // 可以选择页面上任何一个图标的颜色。
+        // 2. 当打开一个文本的调色选择器(这个 color css 属性 但不是 background-color) 你会看到**“Contrast ratio(对比度)”**部分。它显示了文本和它（开发者工具）认为这段文本应该有的背景颜色之间的对比度。如果这个数值很高，你的文本相对于背景来说更容易被看见，如果这个值接近 1 ,那么文本的颜色几乎不能从背景中区分出来；
+        // ---------给console加上时间---------------------------
+        // 1. 给 logs 加上时间戳：打开控制面板ctrl+shift+p，然后输入time，找到timestamps，然后我们在打印console.log的时候。其那面就会加上时间
+        // 2. 监测执行时间：console.time() — 开启一个计时器；console.timeEnd() — 结束计时并且将结果在 console 中打印出来
+        // 如果你想一次记录多件事，可以往这些函数中传入不同的标签值。(例如:console.time('loading'), console.timeEnd('loading'))
+        // 这里需要注意的是浏览器将以毫秒为单位
     </script>
 </body>
 </html>
