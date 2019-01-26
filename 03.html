@@ -102,6 +102,54 @@
 
 
             // ----数值范围--
+            // 最小的数
+            // const min=Number.MIN_VALUE;
+            // console.log(min);
+            // 最大的数---如果一个数组超过了这个最大的数值，该数组将自定转换为特殊的Infinity
+            // const max=Number.MAX_VALUE;
+            // console.log(max);
+            // 判断数组是否合法，也就是说判断数值是否在最小到最大之间，使用isFinite()函数,如果合理返回true
+            // const result=Number.MAX_VALUE+Number.MAX_VALUE;
+            // console.log(isFinite(result));//false
+
+            // -----NaN------
+            // 在Javascript中，任何数组除以非数字会返回NaN，而在其他语句中就会报错。
+            // 这里需要注意的是：任何涉及NaN的操作都会返回NaN，以及NaN与任何值都不相等，报错他本身。
+            // console.log(NaN==NaN)//false
+            // 有一个isNaN()函数，他可以接受任何一个值，当他接受一个值后，他会尝试将这个值转换为数值，，某些不是数值的值会直接
+            // 转换为数值，如果不能转换那么该函数返回true。
+            // console.log(isNaN(NaN))//true
+            // console.log(isNaN("sdksjdksd000"));//true
+            // 这里需要注意的是，isNaN适用于对象，在基于对象调用isNaN函数时，会首先调用对象的valueOf方法，然后确定该方法返回的值
+            // 是否可以转换为数值，如果不能，则基于这个返回值再调用toString方法，再测试返回值。
+
+            // -----数值转换-----
+            // 有是三个函数可以将非数值换换为数值，Number()、parseInt(),parseFloat;
+            // 第一个函数可以用于任何数值类型。另外两个则专门用于将字符串转换为数值。
+            // 这里需要注意的是Number函数中,如果是undefined的,返回为NaN.如果为字符串:如果字符串只包含数字(包括正负号),会转换
+            // 数字,注意前导的0会被忽略,如果字符串包含有效的浮点格式,比如1.1,那么会将其转换为对应的浮点数值,同样,前导0会被忽略.
+            // 如果字符串包含有效的十六进制格式,会将其转换为相同大小的十进制数.
+            // 如果字符串是空的,会将其转换为0,如果字符串包含除了上述格式之外的其他字符,将会转化为NaN;
+            // 如果转换的是一个对象,那么他首先会调用对象的ValueOf方法,然后暗转跟起那么的规则依次进行转换,如果转换的结果为NaN,那么
+            // 会调用对象的toString方法，然后按照前面的规则进行转换字符串。
+            // console.log(Number('Hello World'));//NaN
+            // console.log(Number('00000444'));//444
+            // console.log(Number(true));//1
+            // console.log(Number('454545Hello'));//NaN
+
+            // 由于Number方法处理的规则复杂且不够合理，因此在处理整数的时候更常用的是parseInt函数。
+            // parserInt会忽略字符串前面的空格。如果第一个字符不是数字字符或者负号，parseInt就会返回NaN。也就是说用它转换空字符串
+            // 会返回NaN(Number函数会返回0),如果第一个字符是数字字符，那么他会继续解析第二个字符，知道解析完所有后续字符绘制遇到了
+            // 一个非数字字符。例如1234blue会转换为1234，blue会被忽略，类似22.5会转换为22，因为小数点并不是有效的数字字符。
+            // 如果字符串中的第一个字符是数字字符，parseInt也能够识别出各种整数格式，（及前面所讨论的八进制和十六进制），也就是说
+            // 如果字符串以0x开头且后跟数字字符。就会将其当为一个十六进制的整数，如果字符串以0开头且后跟数字字符，则会将其当做一个
+            // 八进制的数值进行解析。
+            console.log(parseInt('123dsfsdfsdf'));//123
+            console.log(parseInt(NaN));//nan
+            console.log(parseInt(''));//NaN
+            console.log(parseInt('22.5'));//22
+            console.log(parseInt('0xf'));//15
+            // ECMAscript3跟ECMAscript5在转换八进制的数字字符会出现不同，3是将当成八进制，而5会当成十进制。
         </script>
     </div>
 </body>

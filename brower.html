@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>浏览器调试技巧</title>
 </head>
+
 <body>
     <div>调试技巧</div>
+    <script src="./js/console.js"></script>
     <script>
-// ---------------------------------google调试技巧
+        // ---------------------------------google调试技巧
+        // 读掘金文章笔记--文章地址https://juejin.im/post/5c1365a9e51d452f8e6034cb
         // -----console------
         // 1. $1,$2,$3依次类推，是我们所选择过的元素，可以使用其他引用来尝试一些相关操作(例子: $1.appendChild($0))
         // 2. $(),在console中相当于document.querySelector，$$();它不仅仅执行document.QuerySelectorAll并且返回的是一个节点的数组，而不是一个Node list
@@ -58,6 +62,97 @@
         // 2. 监测执行时间：console.time() — 开启一个计时器；console.timeEnd() — 结束计时并且将结果在 console 中打印出来
         // 如果你想一次记录多件事，可以往这些函数中传入不同的标签值。(例如:console.time('loading'), console.timeEnd('loading'))
         // 这里需要注意的是浏览器将以毫秒为单位
+        // ----------自定义格式转换器----------------------------
+        // 1. 自定义格式化转换器，首先按住F1或者点击打开设置，勾选Enable custom formatters，
+        // 这个formatters是一个最多有三个方法的数组，
+        // header —  处理如何展示在 console 的日志中的主要部分。
+        // hasbody —  如果你想显示一个用来展开对象的▶ 箭头，返回 true
+        // body - 定义将会被显示在展开部分的内容中。
+        // 输入下面的代码，会将我们的console打印的内容进行格式化。
+        // window.devtoolsFormatters = [{
+        //     header: function (obj) {
+        //         return ['div', {}, `${JSON.stringify(obj,null,7)}`]
+        //     },
+        //     hasBody: function () {
+        //         return false;
+        //     }
+        // }]
+        // 格式化之后，输入window.document，结果如下
+        // {
+        //     "location": {
+        //         "href": "https://juejin.im/post/5c1365a9e51d452f8e6034cb",
+        //         "ancestorOrigins": {},
+        //         "origin": "https://juejin.im",
+        //         "protocol": "https:",
+        //         "host": "juejin.im",
+        //         "hostname": "juejin.im",
+        //         "port": "",
+        //         "pathname": "/post/5c1365a9e51d452f8e6034cb",
+        //         "search": "",
+        //         "hash": ""
+        //     }
+        // }
+        // 格式化之前，输入window.document，结果如下：window.document，需要点击三角形，才能展开。
+        // header 方法返回了一个 JsonML (译者注： JsonML: JSON Markup Language JSON 标记语言)数组，由这些组成：
+        // 标签名
+        // 属性对象
+        // 内容 (文本值或者其他元素)
+        // 在输出的时候，这个简单的 formatter 对于每一层嵌套，直接以 7 个空格的缩进打印这个对象。
+        // 2. 自定义格式化转换器的应用实践
+        // 一般来说，每当你有一些不寻常的对象的时候，或者大量的日志(最好避免这样的情况，但是有时候很有用)而且你想从中做区分的时候，
+        // 你可以采用一个 custom formatter (自定义格式转换器)来处理。
+        // 一个很实用的窍门就是，直接将你不关心，不需要区别对待的对象过滤出来，这种情况，直接在 header 方法里面 return null。
+        // 让 DevTools 使用默认的格式化方式来处理这些值。
+        // 好了，撇开实用性，你同样可以在它上面找点乐子 - 这儿有一个关于console 方法的蠢萌例子：
+        // 它叫做 console.clown() 并且他将打印对象进行转换，而且在对象前面加上一个 emoji 表情 ... 可能是为了更好的显示吧，我猜 😁
+        // 输入下面的代码：-------他是格式化对象。
+        // window.devtoolsFormatters = [{
+        //     header: function (obj) {
+        //         if (!obj.__clown) {
+        //             return null;
+        //         }
+        //         delete obj.__clown;
+        //         const style =
+        //             `
+        //     color: red;
+        //     border: dotted 2px gray;
+        //     border-radius: 4px;
+        //     padding: 5px;
+        // `
+        //         const content = `😁 ${JSON.stringify(obj, null, 2)}`;
+
+        //         try {
+        //             return ['div', {
+        //                 style
+        //             }, content]
+        //         } catch (err) { // for circular structures
+        //             return null; // use the default formatter
+        //         }
+        //     },
+        //     hasBody: function () {
+        //         return false;
+        //     }
+        // }]
+        // ----------------------style editors continued（样式编辑器）-------------
+        // 1. 阴影编辑器：他跟前面说的颜色编辑器一样，你可以通过在 Style 面板中点击靠近 box-shadow属性 
+        // 或者 text-shadow属性的阴影方形符号来打开它。
+        // 2. Timing function editor 定时函数编辑器：
+        // 也被称为 Cubic bezier(贝塞尔) 编辑器。贝塞尔曲线是一串用来定义 CSS 的动画速度在整个动画过程中如何变化的魔法数值。
+        // 我们将其定义为 transition-timing-function 或者 animation-timing-function CSS 属性。
+        // 就像之前说的 Color picker 和 Shadow editor 一样直接点击我们刚刚提到的属性
+        // (或者他们的简写形式：trasition, animation - 请注意：如果 timing 函数的值没有设置在这个简写的形式中，
+        // 这个符号不会显示出来)边上的曲线符号。
+        // 3. 插入样式规则的按钮
+        // 当你把鼠标放在样式选择器的选择区域的最后时（鼠标移动到有三个点的地方），你会看到几个按钮，
+        // 它们可以让你快速的使用 Color 和 Shadow 编辑器添加 CSS 属性：
+        // ---------------------console.log调试打印日志-----------------------------
+        // 1. Conditional breakpoints 条件断点
+        // 可以在要添加断点的地方，右击行号并且选择 Add conditional breakpoint...(添加条件断点) 的选项
+        // 或者右击一个已经设置的断点并且选择 Edit breakpoint(编辑断点)
+        // 然后输入一个执行结果为 true 或者 false 的表达式
+        //（它的值并不需要明确的为 true 或者 false 尽管那个弹出框的描述是这样说的）。
+        
     </script>
 </body>
+
 </html>
