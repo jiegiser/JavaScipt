@@ -151,7 +151,184 @@
         // 或者右击一个已经设置的断点并且选择 Edit breakpoint(编辑断点)
         // 然后输入一个执行结果为 true 或者 false 的表达式
         //（它的值并不需要明确的为 true 或者 false 尽管那个弹出框的描述是这样说的）。
+        // 2. The ninja（忍者） console.log
+        // 得益于条件断点，现在可以开始灵活使用这个技术。
+        // 因为：
+        // 每一个条件都必须经过判断 - 也就是 - 运行 - 每当应用执行到这一行。
+        // 并且如果条件返回的是false的值(例如. undefined )，它并不会暂停..
+        // 所以，与其在源码的不同地方去添加 console.log / console.table / console.time 等等，
+        // 不如直接使用条件判断来将它们 “连接” 到 Source  面板中。它们不会停止，会一直执行，并且当你不再需要它们的时候，
+        // 有一个地方( Breakpoints section )会列出它们。点两下鼠标就可以把所有的都移除，就像一堆忍者一样消失！
+        // 在右侧的Breakpoints选项右击选择remove all Breakpoints，就会移除掉所有的断点。
+
+
+
+        // ---------------------对象与方法-------------------
+        // 1. 对象查询方法
+        // 假如我们有下面的这些代码。如果我们想找一下这些代码中存在哪些对象，可以使用DevTools有一个queryObjects函数，
+        // 这里需要注意的是，最后一个实例化的Person对象是不可用的。因为在代码执行后，对于他的引用是没有存下来的。
+        // 所以我们的代码中只有3个对象、
+        // class Person{
+        //     constructor(name,role){
+        //         this.name=name;
+        //         this.role=role;
+        //     }
+        // }
+        // const jiegiser=new Person('jiegiser','giser');
+        // let kids=[
+        //     new Person('zixia','kid'),
+        //     new Person('zizi','kid'),
+        // ];
+        // new Person('jieouba','me');
+        // console.log('how many people are do we have!')
+        // 可以使用queryObjects(Person)查找有几个Person对象、他会以数组的形式进行返回。
+        // 2. monitor functions镜像函数
+        // monitor 是 DevTools 的一个方法, 它能够让你 spy(潜入) 到任何 "function calls(方法的调用)" 中：
+        // 每当一个 spied 被潜入 的方法运行的时候，console 控制台 会把它的实例打印出来，包含函数名以及调用它的参数。
+        // 如下面的例子：
+        // class Perons{
+        //     constructor(name,role){
+        //         this.name=name;
+        //         this.role=role;
+        //     }
+        //     greet(){
+        //         return this.getMessage('greeting')
+        //     }
+        //     getMessage(type){
+        //         if(type==='greeting'){
+        //             return `Hello ,I'm ${this.name}!`
+        //         }
+        //     }
+        // }
+        // jiegier=new Perons('jiegiser','giser')//Perons {name: "jiegiser", role: "giser"}
+        // monitor(jiegier.getMessage)//undefined
+        // jiegier.greet()//function getMessage called with arguments: greeting,会答应出函数的参数
+
+        // --------------------其他快捷键-----------------
+        // 1. Switch between 2 recent DevTools placements 在两个最近使用的 DevTools 的展示位置之间切换：
+        // 快捷键 ctrl + shift + D会切换调试工具的位置；
+        // 2. Switch between DevTools panels 在 DevTools 的面板之间切换
+        // 按下 ctrl + [ 和 ctrl + ] 分别从当前面板的分别向左和向右切换面板。
+        // 按下 ctrl + 1 到 ctrl + 9 转到编号 1...9 的面板(所以 ctrl + 1 转到元素面板，ctrl + 4 转到 网络信息面板等等)
+        // 这里需要注意的是! 后面这组快捷键默认是停用的。如果你想打开它，到 DevTools Settings>>Preferences>>Appearance然后打开这个选项：
+        // 在浏览器中，直接按住ctrl+1~9，是切换1~9的标签
+        // 3.  Increment/decrement 递增/递减
+        // 这个对 Style 部份最有用：通过使用带有或者不带有修饰键的上/下 箭头按键 你可以很轻松的
+        // 递增和递减 0.1 , 1 或者 10 这样数值类型的值。---也就是直接选择一个属性，按上下键，会有增量的变化、对于颜色，直接点击后，按上下键就会增加，但是微小的变动，
+
+        // ------------------其他对象跟方法-------------
+        // 1. monitorEvents function monitorEvents函数：
+        // 这个monitorEvents函数跟前面那个monitor函数相似，不过他是作用于events事件。
+        // 他有两个参数，第一个参数是要选择的对象，第二个参数是要追踪的事件；比如之间学的，使用$0选择的第几个元素，如下面代码：
+        // monitorEvents($0,'click')然后点击那个按钮之后，会打印events事件对象。
+        // 2. console.log 基于调用堆栈自动缩进
+        // 如下代码：
+        // function log(message) {
+        //     console.log('  '.repeat(new Error().stack.match(/\n/g).length-2)+message);
+        // }
+        // function foo(){
+        //     log('foo');
+        //     return bar()+bar()
+        // }
+        // function bar(){
+        //     log('bar');
+        //     return baz()+baz();
+        // }
+        // function baz(){
+        //     log('baz');
+        //     return 17;
+        // }
+        // foo();
+        // 打印的结果：
+        //    foo
+            //   bar
+                // baz
+                // baz
+            //   bar
+                // baz
+                // baz
+        // 2. 你的 console.log 加上 CSS 样式
+        // 印文本加上 %c 然后 console.log 的第二个参数变成了...CSS 规则！
+        // 你可以利用这一点让你的日志脱颖而出(例如 Facebook 在你打开 console 的时候所做的一样)
+        // 如下面的代码：
+        // console.log('%cAlvaro','color:green;background:yellow;font-size:30px')
+        // 3. replay XHR requests (重新发送 XHR 的请求)
+        // 打开Network，找到一个请求，可以右击选择Peplay XHR 重新发送XHR的请求；
+        // 4. expand all child nodes in Elements panel 在元素面板中展开所有的子节点
+        // 我们一般都会点击折叠的那个三角形按钮进行打开所有子节点，可以使用直接选择节点后右击选择expand recursively 命令会
+        // 打开它下面的所有子节点。
+
+
+        // ------------------断点---------------------
+        // 1. DOM breakpoints (DOM 断点)
+        // 某些脚本会修改 DOM 的一部分，不确定修改的是哪部分？甚至不确定是什么时候修改的？添加一个 DOM 断点。
+        // 你就可以监听到节点被添加或者移除，或属性被改变。
+        // 右击选择要添加断点的节点元素，然后选择Break on，会有三个选项：
+        // 1.1 subtree modification(内部的任何节点被移除或者添加时触发) 1.2 attribute modification(被选中节点的任何属性被添加、移除、修改值的时候触发)
+        // 1.3 node removal(选中的元素被移除触发)
+        // 2. MutationObserver （变化观察者）
+        // MutationObserve是浏览器API的一部分，它允许像前面提到的 DOM 断点一样监听 childList , 
+        // attributes 和 subtree类似的更改，在 JavaScript 代码中，也可以实现，即使是在 IE11 中。
+        // XHR/fetch 断点：当你想捕获已发送的 “ajax” 请求中的特定时刻， 可以使用 XHR/fetch breakpoint。
+        // 这些只能在 Source 面板中设置。（我也同样希望在 Network 面板中可以设置，但事实并非如此）；
+        // 在Source 面板中找到XHR/fetch Breakoptions然后点击加号，添加一个请求断点，填入部分url，来暂定这些请求，
+        // 或者是一个也不填，来暂停任何xhr/fetch请求。---慎重选择
+
+        // ------------console的其他方法--------------
+        // 1. For more readable logs (更易读的日志)
+        // 当我们使用console.log()去打印变量信息的时候，我们可能会忘记，混淆，到底是打印的哪一个。比如我们要打印下面的变量
+        // const myName='jiegiser';
+        // const pencilsCount=7;
+        // const timestampNow=+new Date();
+        // const id=5;
+        // console.log(myName,pencils Count,timestampNow,id);//jiegiser 7 1548579198825 5--不那么易读
+        // 为了让他变的容易读，你可以打印一个对象 - 只需将所有console.log 的参数包装在大括号中
+        // （ECMAScript 2015 中引入了 enhanced object literal(增强对象文字面量) ，所以这（加了个括号）就是你需要做的全部了）
+        // 如下面的代码：
+        // console.log({myName,pencilsCount,timestampNow,id});//这样会将每个变量已对象的形式打印出来
+        // 2.  Brackets + table = 🤯 （大括号 + 表格 = 🤯 ）
+        // 将要输出的用括号包起来，并且使用.table方法替代.log方法，如下面的代码：
+        // console.table({myName,pencilsCount,timestampNow,id});//---会以表格的形式打印出来
+
+
+        // -------------Drawer-----------------
+        // 1. The DevTools drawer
+        // Chrome DevTools 有很多部分，被分为 9 个 tab(标签页/选项卡) ( Elements , Console , Sources , Network , 等等...)
+        // - 但那仅仅是它的一部分而已！有一组平行的选项卡，被隐藏在主窗口之下。这个组合被称为 Drawer；
+        // 要访问它，当你在 DevTools（任何选项卡） 中时，按 [esc] 。 再次按 [esc] 隐藏它：
+        // 默认情况下，你会看到一个 console 选项卡。 这与主面板的 console 完全相同。 这就是为什么它(主面板)会显示除了 
+        // console 之外的每个主要标签（ Elements ，Sources ，Network ...）- 这里显示(Console)没有实际意义。
+        // 同时可以看到，这样显示 console 很方便，例如在 Elements 面板中(同时看到 console 面板)。但那并不是所有在 Drawer 中隐藏的东西。
+        // 2. The other tools in the drawer (drawer 中的其他工具)
+        // Drawer 里隐藏着许多其他功能，大多数时候你可能不需要用到它们，这也是它们为什么被隐藏起来的原因，然而，
+        // 你可以直接选择想要在这里展示的功能。
+        // 按esc键，然后在出现的面板的左上角有三个点的符号，点击，进行选择要显示的工具，或者安装ctrl+shift+p打开控制面板输入drawer，选择要显示的工具
+
+        // -------------------Workspace中的功能----------
+
+        // 这里需要注意的是 在Sources面板中，然后选择左侧的》》符号点击选择FileSystem，然后点击add fold to workspace
+        // 然后选择工作区。这样就可以了，然后在里面进行修改文件，或者修改css等，然后会直接显示以及在本地修改，也会同步
+        // 到我们的工作区中，，，这里没有安装webpack等，，，热加载，，，，，=======厉害
         
+        // 1. 在Chrome中修改你的文件：
+        // 代码执行的位置是最容易编辑代码的位置 - 也就是在浏览器中。如果你直接把项目的文件夹直接拖到 Source 面板，
+        // DevTools 会将你做出的修改同步到系统的文件中。
+        // 2. Workspace allows an instant styles sync(工作区支持即时同步样式)
+        // 正如我们刚才所说，一旦设置好了 DevTools workspace，就可以在 Sources 面板中编辑 HTML 和 JavaScript（
+        // 或者甚至是 TypeScript ，如果你有 sourcemaps ）文件，按 ctrl + s 后它将被保存 在文件系统中。
+        // 但是在样式方面它提供了更好的支持。 即使你在 “元素” 面板的 “样式” 部分中编辑样式规则，它也会立即同步。立刻！
+        // 3. Select a target location for new selector (为新选择器选择目标位置)
+        // 要向现有选择器添加新样式，很容易：只需在 “元素” 面板的 “样式” 部分中找到该选择器，然后开始编写 CSS。
+        // 但是如果还没有这样的选择器，则需要按下New Style Rule 按钮。
+        // 但是，当你使用工作区时，新样式规则的默认定位为 - “inspector-stylesheet：1” 如果你不想要这个默认位置。 
+        // 只需按住 New Style Rule 按钮，你将看到列出所有 CSS 文件的选项。 只需选择目的地，新规则就会保存在那里！
+        // 也就是点击Element面板中的Style模板，在右侧又有+按钮，然后点击，会添加一个css规则，选择小三角形，会让你选择在哪里的css文件进行添加；
+        // 4. Workspace allows css injection!（ Workspace 允许 CSS 注入！）
+        // 设置工作区后，浏览器中所做的更改不仅会持久保存到文件系统中，而且你的 CSS  更改保存在文件系统后，
+        // 立即被浏览器选中并显示在你的页面上。不需要刷新。
+        // 敲黑板：我们没有使用额外的工具-没有 webpack 的热更新模块或者其他东西 - 只有一个本地服务以及 DevTools' workspace 而已。
+
+
     </script>
 </body>
 
