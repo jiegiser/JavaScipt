@@ -241,12 +241,12 @@
         // foo();
         // 打印的结果：
         //    foo
-            //   bar
-                // baz
-                // baz
-            //   bar
-                // baz
-                // baz
+        //   bar
+        // baz
+        // baz
+        //   bar
+        // baz
+        // baz
         // 2. 你的 console.log 加上 CSS 样式
         // 印文本加上 %c 然后 console.log 的第二个参数变成了...CSS 规则！
         // 你可以利用这一点让你的日志脱颖而出(例如 Facebook 在你打开 console 的时候所做的一样)
@@ -309,7 +309,7 @@
         // 这里需要注意的是 在Sources面板中，然后选择左侧的》》符号点击选择FileSystem，然后点击add fold to workspace
         // 然后选择工作区。这样就可以了，然后在里面进行修改文件，或者修改css等，然后会直接显示以及在本地修改，也会同步
         // 到我们的工作区中，，，这里没有安装webpack等，，，热加载，，，，，=======厉害
-        
+
         // 1. 在Chrome中修改你的文件：
         // 代码执行的位置是最容易编辑代码的位置 - 也就是在浏览器中。如果你直接把项目的文件夹直接拖到 Source 面板，
         // DevTools 会将你做出的修改同步到系统的文件中。
@@ -326,9 +326,75 @@
         // 4. Workspace allows css injection!（ Workspace 允许 CSS 注入！）
         // 设置工作区后，浏览器中所做的更改不仅会持久保存到文件系统中，而且你的 CSS  更改保存在文件系统后，
         // 立即被浏览器选中并显示在你的页面上。不需要刷新。
-        // 敲黑板：我们没有使用额外的工具-没有 webpack 的热更新模块或者其他东西 - 只有一个本地服务以及 DevTools' workspace 而已。
+        // 需要注意的是：我们没有使用额外的工具-没有 webpack 的热更新模块或者其他东西 - 只有一个本地服务以及 DevTools' workspace 而已。
 
 
+        // ----------------Snippets代码块----------------
+        // 1. Snippets
+        // 这是让你存放 JavaScript 代码到 DevTools 的一种方式，以便于你稍后复用他们。
+        // $$('td:last-child .sortableTable-number')
+        //     .map(el => parseInt(el.innerText))
+        //     .reduce((total, value) => total + value);
+        // 创建这样一个 Snippet 进入到 Sources 面板，在导航栏里面选中 Snippets 这栏，点击 “New snippet(新建一个代码块)” ,
+        // 输入你的代码，保存，大功告成！你可以通过右击菜单选择run,或者 [ctrl] + [enter] 快捷键来运行它了：
+        // 2. Run snippets from wherever(运行其他来源的代码块)
+        // 一旦设置了一组很棒的代码块，你甚至不必访问 Sources 来运行它们。最快的方式，就像我们本周已经多次发现的那样，
+        // 就是使用 Command Menu。如果输入 ! 在它的输入框中，就可以根据名字来选择你的代码块----这里需要注意的是,按住ctrl+shift+p
+        // 打开这个后,需要删除所有的内容,不然运行不了(把那个> 这个删除了，再输入！)
+        
+
+        // ---------------network---------------
+        // 1.  Hide network overview（ 隐藏 network overview ）
+        // 打开network面板，点击view：后面的第二个按钮，看起来像台阶的按钮，就会影藏上面的请求的时间轴，多留一些空间，然后
+        // 按第一个按钮，会将请求的的行变窄。。。
+        // 2. Request initiator shows a call stack( Request initiator 显示了调用堆栈信息)
+        // Network 面板中的 initiator 列显示了是哪个脚本的哪一行触发了请求。他显示了在调用堆栈中触发请求的最后一步，除非你用的是，
+        // 例如：一个本地化的 fetch API,它将会指向一些低层级的类库的代码 - 例如 当我们在 Angular 配合使用 Axios 或者 
+        // zone.js 的时候，这时指向的是 xhr.js
+        // 除了这些外部库之外，你可能希望查看代码的哪一部分触发了请求。 要将信息悬停在显示的 initiator（例如 外部库）上，
+        // 你将看到完整的调用堆栈，包括你的文件。
+        // 3. Filter requests by method (按照方法过滤请求)
+        // Network 面板中的过滤器输入可以接受你输入的字符串或正则表达式，仅显示匹配的请求。 但是你也可以使用它来过滤很多属性。
+        // 只需输入 例如 method 或者 mime-type --------method:POST或者输入status-code:200
+        // 4. Customise the requests table(自定义请求表)
+        // 在请求表中，你可以看到有关每个请求的几条信息，例如：Status, Type, Initiator, Size 和 Time 。
+        // 但是你同样可以添加更多(例如 我经常添加 Method )，要自定义显示哪些列，只需右键单击请求表标题上的任意位置。
+        // 请注意，Response Headers 是一个有更多选项的完整的子菜单，甚至可以定义你自己的选项。
+
+
+        // ----------------Drawer tips 后续-------------------
+        // 1. Check the code coverage (检查代码 coverage)
+        // 实际上你的页面并不需要位于尾部的许多代码。 也许它是来自外部库的一大块 JavaScript ，
+        // 也许是被遗忘的选择器上的一些 CSS 规则，它们不再匹配任何东西。
+        // 使用 coverage 面板来获得关于冗余代码的摘要-细节信息。使用 Drawer 菜单或者 Command 菜单来打开它。
+        // DevTools 的 coverage 工具可以跟踪当前加载的 JS 和 CSS 文件的哪些行正在被执行，并显示未使用字节的百分比。
+        // 它用绿色的线条标记运行和用红色的线条标记未运行。
+        // 2. Check what you’ve changed (检查你修改的内容)
+        // 在浏览器中进行设计，调整这些css值，在代码执行的地方进行调试 - 这既方便又有趣。 但在某些时候，
+        // 你可能希望将已更改的内容与最初加载的样式表进行比较。
+        // 为此，可以使用位于 DevTools' Drawer 中的更改工具。它不仅会使用差异形式的变化（像 Git 这样的源控制工具一样）
+        // 向你展示，同时还可以撤销它们;
+
+        // ------------其他工具-----------------------
+        // 1. Use console.log in callback directly（直接在回调中使用 console.log）
+        // 我经常发现自己处于这样一种情况，就是我不完全确定要将什么传递给回调函数。在这种情况下，
+        // 我会在里面添加一个 console.log 来检查。
+        // 有两种方式来实现：在回调方法的内部使用 console.log 或者 直接使用 consolelog 来作为回调方法。
+        // 这不仅可以减少输入，而且可能回调接收多于1个参数，在第一个解决方案中你可能会错过，比如下面的代码：
+        // getMyLocation(v=>console.log(v));//在回调方法内部使用console.log
+        // getMyLocation(console.log());//直接使用console.log来作为回调函数
+        // 2. Find in elements, logs, sources & network(elements, logs, sources & network 的查找)
+        // DevTools 中的前4个主要的面板，每一个都支持 [ctrl] + [f] 快捷方式，你可以使用相关的查询方式查找信息:
+        // 在 Elements 面板中 - 通过 string ,选择器 或者 XPath 来查找
+        // 而在 Console, Network 以及 Source 面板 - 通过区分大小写，或者可以被视为表达式的 strings, 来查找；
+        // 3. Use live expressions 使用实时表达式
+        // 2个月前，DevTools 在 Console 面板中引入了一个非常漂亮的附加功能，这是一个名为 Live expression 的工具
+        // 只需按下 "眼睛" 符号，你就可以在那里定义任何 JavaScript 表达式。 它会不断更新，所以表达的结果将永远，存在 :-)
+        // 你可以同时定义几个：
+        // 比如输入下面代码：
+        // myStoredMousePosition();
+        // 或者直接输入：
+        // document.querySelectorAll('.greent').length;
     </script>
 </body>
 
