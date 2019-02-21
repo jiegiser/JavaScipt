@@ -7,11 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>第三章</title>
     <style>
-        body{
+        body {
             /* 文字居中 */
             text-align: center;
         }
-        img{
+
+        img {
             /* 圆角 */
             border-radius: 50%;
             /* 过渡效果 */
@@ -20,7 +21,8 @@
             -o-transition: all 0.5s;
             cursor: pointer;
         }
-        img:hover{
+
+        img:hover {
             /*scale就是缩放，当鼠标进行图片的时候，图片缩放到1.1倍  */
             transform: scale(1.1);
         }
@@ -60,12 +62,12 @@
 
             // console.log(typeof say);//undefined
             // console.log(typeof arr);//undefined
-// 
+            // 
             // var ObNnull=null;
             // console.log(typeof ObNnull);//object表示空对象
-// 
+            // 
             // console.log(null==undefined);//true
-// 
+            // 
             // console.log(ObNnull);//null,判断是否为null，只需要==null，就可以
 
 
@@ -144,12 +146,198 @@
             // 如果字符串中的第一个字符是数字字符，parseInt也能够识别出各种整数格式，（及前面所讨论的八进制和十六进制），也就是说
             // 如果字符串以0x开头且后跟数字字符。就会将其当为一个十六进制的整数，如果字符串以0开头且后跟数字字符，则会将其当做一个
             // 八进制的数值进行解析。
-            console.log(parseInt('123dsfsdfsdf'));//123
-            console.log(parseInt(NaN));//nan
-            console.log(parseInt(''));//NaN
-            console.log(parseInt('22.5'));//22
-            console.log(parseInt('0xf'));//15
+            // console.log(parseInt('123dsfsdfsdf'));//123
+            // console.log(parseInt(NaN));//nan
+            // console.log(parseInt(''));//NaN
+            // console.log(parseInt('22.5'));//22
+            // console.log(parseInt('0xf'));//15
             // ECMAscript3跟ECMAscript5在转换八进制的数字字符会出现不同，3是将当成八进制，而5会当成十进制。
+
+
+            // 2019.2.21
+            // class对象--特殊的函数
+            // 函数有提升，但是类没有，在类申明之前使用类，会报错；
+            // 类有两种表达式，一种是匿名类，一种是命名类
+            // 匿名类
+            // let Circle=class {
+            //     constructor(point,r){
+            //         this.point=point;
+            //         this.r=r;
+            //     }
+            // }
+            // // 命名的类
+            // let Rectangle=class Rectangle{
+            //     constructor(height,width){
+            //         this.height=height;
+            //         this.width=width;
+            //     }
+            // }
+            // 一个构造函数可以使用super关键字来调用一个父类的构造函数
+            // 静态方法
+            // static关键字用来定义一个静态方法，与C#一样，不能通过类实例调用静态方法。调用静态方法不需要实例化该类。
+            // 静态方法通常用于为一个应用程序创建工具函数
+
+            // class Point{
+            //     constructor(x,y){
+            //         this.x=x;
+            //         this.y=y;
+            //     }
+            //     static distance(a,b){
+            //         const dx=a.x-b.x;
+            //         const dy=a.y-b.y;
+            //         return Math.hypot(dx,dy);
+            //     }
+            // }
+            // const p1=new Point(5,5);
+            // const p2=new Point(10,10);
+            // 调用静态方法
+            // console.log(Point.distance(p1,p2));
+
+            // 用原型和静态方法包装
+
+            /**
+            当一个对象调用静态或原型方法时，如果该对象没有“this”值（或“this”作为布尔，字符串，数字，未定义或null) ，
+            那么“this”值在被调用的函数内部将为 undefined。不会发生自动包装。即使我们以非严格模式编写代码，
+            它的行为也是一样的，因为所有的函数、方法、构造函数、getters或setters都在严格模式下执行。
+            因此如果我们没有指定this的值，this值将为undefined。
+            */
+            // class Animal{
+            //     speak(){
+            //         return this;
+            //     }
+            //     static eat(){
+            //         return this;
+            //     }
+            // }
+            // let obj=new Animal();
+            // console.log(obj.speak());//Animal {}
+            // let speak=obj.speak;
+            // console.log(speak());//undefined
+            // Animal.eat();
+            // let eat=Animal.eat;
+            // console.log(eat());//undefined
+            // 如果使用传统的基于函数的类来编写上述代码，那么基于调用该函数的“this”值将发生自动装箱。
+            // function Animal() {}
+            // Animal.prototype.speak = function () {
+            // return this;
+            // }
+            // Animal.eat = function () {
+            // return this;
+            // }
+            // let obj=new Animal();
+            // let speak=obj.speak;
+            // console.log(speak());//Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+            // let eat=Animal.eat;
+            // console.log(eat());//Window {postMessage: ƒ, blur: ƒ, focus: ƒ, close: ƒ, frames: Window, …}
+
+
+            // 类的继承
+            // class Animal{
+            //     constructor(name){
+            //         this.name=name;
+            //     }
+            //     speak(){
+            //         console.log(this.name+' makes a noise');
+            //     }
+            // }
+
+            // class Dog extends Animal{
+            //     speak(){
+            //         console.log(this.name+' barks.');
+            //     }
+            // }
+            // let d=new Dog('xxxx');
+            // d.speak();//xxxx barks.
+            // 如果子类中存在构造函数，则需要在使用this之前首先调用super();
+
+            // class Animal{
+            //     constructor(name){
+            //         this.name=name;
+            //     }
+            //     speak(){
+            //         console.log(this.name+' makes a noise');
+            //     }
+            // }
+
+            // class Dog extends Animal{
+            //     constructor(name,age){
+            //         super(name);
+            //         this.age=age;
+            //     }
+            //     speak(){
+            //         console.log(this.name+' barks.');
+            //     }
+            //     speakAge(){
+            //         console.log(this.age+' hhhhs')
+            //     }
+            // }
+            // let d=new Dog('xxxx',28);
+            // d.speak();//xxxx barks.
+            // d.speakAge();
+
+
+            // 扩展传统的基于函数的类
+            // function Animal(name){
+            //     this.name=name;
+            // }
+            // Animal.prototype.speak=function(){
+            //     console.log(this.name+' makes a moise');
+            // }
+            // class Dog extends Animal{
+            //     speak(){
+            //         super.speak();
+            //         console.log(this.name+' barks.');
+            //     }
+            // }
+            // var d=new Dog('cccc');
+            // d.speak();
+
+            // 请注意，类不能继承常规（非可构造）对象。如果要继承常规对象，可以改用Object.setPrototypeOf()：
+
+
+            // var Animal={
+            //     speak(){
+            //         console.log(this.name+' makes a noise.');
+            //     }
+            // };
+            // class Dog{
+            //     constructor(name) {
+            //         this.name=name;
+            //     }
+            // }
+            // // 给Dog.prototype设置新的原型，Aniaml
+            // Object.setPrototypeOf(Dog.prototype,Animal);
+            // var d=new Dog(' vvvv');
+            // d.speak();//vvvv makes a noise.
+
+            // 派生数组类 MyArray 中返回 Array对象。这种 species 方式允许你覆盖默认的构造函数
+            // class MyArray extends Array {
+            //     static get[Symbol.species]() {
+            //         return Array;
+            //     }
+            // }
+            // var a = new MyArray(1, 2, 3);
+            // var mapped = a.map(x => x * x);
+            // console.log(mapped instanceof MyArray); //false
+            // console.log(mapped instanceof Array); //true
+
+            // super()  关键字用于调用对象的父对象上的函数。
+            class Cat {
+                constructor(name) {
+                    this.name = name;
+                }
+
+                speak() {
+                    console.log(this.name + ' makes a noise.');
+                }
+            }
+
+            class Lion extends Cat {
+                speak() {
+                    super.speak();
+                    console.log(this.name + ' roars.');
+                }
+            }
         </script>
     </div>
 </body>
