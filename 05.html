@@ -194,6 +194,41 @@
             // // 取得停止时间
             // let end= +Date.now();
             // let result = end-start;
+
+
+            // -----------------function对象------------------------
+            function createComparisonFunction(propertyName){
+                return function(object1,object2){
+                    let value1=object1[propertyName];
+                    let value2=object2[propertyName];
+                    if(value1<value2){
+                        return -1;
+                    }else if(value1>value2){
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }
+            }
+            const data=[
+                {
+                    name:"jiegiser",
+                    age:19
+                },
+                {
+                    name:"jieouba",
+                    age:18
+                }
+            ];
+            data.sort(createComparisonFunction('name'));
+            console.log(data);
+            // {name: "jieouba", age: 18} {name: "jiegiser", age: 19}
+            data.sort(createComparisonFunction('age'));
+            console.log(data);//{name: "jieouba", age: 18} {name: "jiegiser", age: 19}
+
+            function add(...args){
+                console.log(args);
+            }
     </script>
     
 </body>
